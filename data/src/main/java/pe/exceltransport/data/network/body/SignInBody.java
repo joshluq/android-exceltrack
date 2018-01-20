@@ -17,4 +17,5 @@ public class SignInBody {
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
     }
+
 }

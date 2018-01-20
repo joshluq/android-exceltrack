@@ -1,6 +1,6 @@
 package pe.exceltransport.data.network.response;
 
-public class ResponseBody<T> {
+public class BodyResponse<T> {
 
     private T body;
     private ErrorResponse error;

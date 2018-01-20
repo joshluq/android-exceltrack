@@ -27,7 +27,6 @@ import javax.inject.Singleton;
 
 import pe.exceltransport.domain.executor.ThreadExecutor;
 
-@Singleton
 public class JobExecutor implements ThreadExecutor {
   private final ThreadPoolExecutor threadPoolExecutor;
 

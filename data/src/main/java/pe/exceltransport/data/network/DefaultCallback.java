@@ -2,7 +2,7 @@ package pe.exceltransport.data.network;
 
 import io.reactivex.ObservableEmitter;
 import pe.exceltransport.data.exception.DefaultException;
-import pe.exceltransport.data.network.response.ResponseBody;
+import pe.exceltransport.data.network.response.BodyResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -11,7 +11,7 @@ public class DefaultCallback<T> implements Callback<T> {
 
     private final ObservableEmitter emitter;
 
-    public DefaultCallback(ObservableEmitter emitter) {
+    DefaultCallback(ObservableEmitter emitter) {
         this.emitter = emitter;
     }
 
@@ -19,10 +19,10 @@ public class DefaultCallback<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         if (!response.isSuccessful()) {
             emitter.onError(new DefaultException(DefaultException.Codes.DEFAULT_ERROR.getCode()));
-        }else{
-            ResponseBody body = ((ResponseBody) response.body());
+        } else {
+            BodyResponse body = ((BodyResponse) response.body());
             if (body != null && body.getError() != null) {
-                emitter.onError(new DefaultException(body.getError().getMessage(),body.getError().getCode()));
+                emitter.onError(new DefaultException(body.getError().getMessage(), body.getError().getCode()));
             }
         }
     }
