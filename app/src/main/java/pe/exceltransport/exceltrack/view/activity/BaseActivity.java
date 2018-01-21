@@ -1,18 +1,24 @@
 package pe.exceltransport.exceltrack.view.activity;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.navigator.Navigator;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private boolean stopped;
+
+    @Nullable
+    @BindView(R.id.v_loading)
+    View vLoading;
 
     @Inject
     Navigator navigator;
@@ -39,6 +45,18 @@ public class BaseActivity extends AppCompatActivity {
 
     public boolean isStopped() {
         return stopped;
+    }
+
+    public void showLoading(){
+        if(vLoading != null){
+            vLoading.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideLoading(){
+        if(vLoading != null){
+            vLoading.setVisibility(View.GONE);
+        }
     }
 
 }

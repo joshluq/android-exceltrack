@@ -82,12 +82,12 @@ public class SignInActivity extends BaseActivity implements SignInView{
 
     @Override
     public void showLoading() {
-
+        super.showLoading();
     }
 
     @Override
     public void hideLoading() {
-
+        super.hideLoading();
     }
 
     @OnClick(R.id.btn_sign_in)
