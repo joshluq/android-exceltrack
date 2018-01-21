@@ -16,4 +16,15 @@ public class UserEntityDataMapper {
         return null;
     }
 
+    public static UserEntity transform(User user){
+        if(user != null){
+            UserEntity entity = new UserEntity();
+            entity.setName(user.getName());
+            entity.setLastName(user.getLastName());
+            entity.setEmail(user.getEmail());
+            return entity;
+        }
+        return null;
+    }
+
 }

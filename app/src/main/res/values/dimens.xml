@@ -2,4 +2,9 @@
 <resources>
     <dimen name="default_dp_10_2">20dp</dimen>
     <dimen name="default_dp_10_5">50dp</dimen>
+
+
+    <dimen name="default_sp_4_4">16sp</dimen>
+    <dimen name="default_dp_10_3">30dp</dimen>
+    <dimen name="default_dp_10_4">40dp</dimen>
 </resources>

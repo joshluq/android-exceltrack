@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Emitter;
 import io.reactivex.Observable;
-import pe.exceltransport.data.entity.UserEntity;
+import pe.exceltransport.data.entity.SessionEntity;
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
@@ -29,16 +29,16 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<UserEntity> signIn(SignInBody body) {
+    public Observable<SessionEntity> signIn(SignInBody body) {
         return Observable.create(emitter -> {
             if (isThereNetworkConnection(emitter)) {
                 restService.signIn(body).enqueue(new DefaultCallback<BodyResponse<SignInResponse>>(emitter) {
                     @Override
                     public void onResponse(@NonNull Call<BodyResponse<SignInResponse>> call, @NonNull Response<BodyResponse<SignInResponse>> response) {
                         super.onResponse(call, response);
-                        BodyResponse<SignInResponse> body = response.body();
-                        if (body != null && body.getBody() != null) {
-                            emitter.onNext(body.getBody().getUserEntity());
+                        BodyResponse<SignInResponse> bodyResponse = response.body();
+                        if (bodyResponse != null && bodyResponse.getBody() != null) {
+                            emitter.onNext(bodyResponse.getBody().getSessionEntity());
                             emitter.onComplete();
                         }
                     }

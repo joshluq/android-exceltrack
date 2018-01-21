@@ -4,12 +4,13 @@ package pe.exceltransport.domain.interactor;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import pe.exceltransport.domain.Session;
 import pe.exceltransport.domain.User;
 import pe.exceltransport.domain.executor.PostExecutionThread;
 import pe.exceltransport.domain.executor.ThreadExecutor;
 import pe.exceltransport.domain.repository.UserRepository;
 
-public class SignIn extends UseCase<User, SignIn.Params> {
+public class SignIn extends UseCase<Session, SignIn.Params> {
 
     private final UserRepository repository;
 
@@ -20,7 +21,7 @@ public class SignIn extends UseCase<User, SignIn.Params> {
     }
 
     @Override
-    Observable<User> buildUseCaseObservable(Params params) {
+    Observable<Session> buildUseCaseObservable(Params params) {
         return repository.signIn(params.email,params.password,"");
     }
 

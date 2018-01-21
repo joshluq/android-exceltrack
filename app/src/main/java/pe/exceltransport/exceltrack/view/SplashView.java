@@ -4,4 +4,5 @@ public interface SplashView extends  LoadDataView{
 
     void goToSignIn();
 
+    void goToMain();
 }

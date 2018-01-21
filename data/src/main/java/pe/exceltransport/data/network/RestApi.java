@@ -2,11 +2,11 @@ package pe.exceltransport.data.network;
 
 
 import io.reactivex.Observable;
-import pe.exceltransport.data.entity.UserEntity;
+import pe.exceltransport.data.entity.SessionEntity;
 import pe.exceltransport.data.network.body.SignInBody;
 
 public interface RestApi {
 
-    Observable<UserEntity> signIn(SignInBody body);
+    Observable<SessionEntity> signIn(SignInBody body);
 
 }
