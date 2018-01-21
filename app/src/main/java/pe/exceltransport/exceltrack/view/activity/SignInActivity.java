@@ -70,9 +70,7 @@ public class SignInActivity extends BaseActivity implements SignInView{
 
     @Override
     public void setEmail(String email) {
-        if(tilEmail.getEditText() != null){
-            tilEmail.getEditText().setText(email);
-        }
+        if(tilEmail.getEditText() != null) tilEmail.getEditText().setText(email);
     }
 
     @Override
@@ -97,7 +95,7 @@ public class SignInActivity extends BaseActivity implements SignInView{
 
     @Override
     public void showError(String message) {
-
+        navigator.showAlertDialog(getString(R.string.text_error),message,getString(R.string.text_got_it));
     }
 
 }

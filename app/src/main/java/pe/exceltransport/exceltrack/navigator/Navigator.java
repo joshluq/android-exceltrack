@@ -1,6 +1,8 @@
 package pe.exceltransport.exceltrack.navigator;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 
 import javax.inject.Inject;
 
@@ -17,18 +19,27 @@ public class Navigator {
         this.activity = activity;
     }
 
-    public void navigateToSignInActivity(){
+    public void navigateToSignInActivity() {
         activity.finish();
         activity.startActivity(SignInActivity.getCallingIntent(activity));
     }
 
-    public void navigateToMainActivity(){
+    public void navigateToMainActivity() {
         activity.finish();
         activity.startActivity(MainActivity.getCallingIntent(activity));
     }
 
-    private void fragmentTransaction(FragmentTransaction transaction){
-        if(activity.isStopped()) transaction.commitAllowingStateLoss();
+    public void showAlertDialog(String title, String message, String positiveButtonText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(positiveButtonText, (dialog, which) -> dialog.dismiss());
+        builder.create().show();
+    }
+
+    private void fragmentTransaction(FragmentTransaction transaction) {
+        if (activity.isStopped()) transaction.commitAllowingStateLoss();
         else transaction.commit();
     }
 

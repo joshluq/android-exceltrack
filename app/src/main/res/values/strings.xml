@@ -7,9 +7,11 @@
     <string name="text_password">Constraseña</string>
     <string name="text_sign_in">Iniciar sesión</string>
     <string name="text_default_exception_message">Ocurrió un error, intente nuevamente.</string>
-    <string name="text_no_internet_message">No hay conexión.</string>
+    <string name="text_no_internet_message">No se pudo conectar, verifique su conexión a internet.</string>
     <string name="text_unknown_message">Error desconocido.</string>
     <string name="text_invalid_credentials_message">Credenciales Inválidas.</string>
     <string name="text_remember">recordar</string>
+    <string name="text_error">¡Ups!</string>
+    <string name="text_got_it">Entendido</string>
 
 </resources>
