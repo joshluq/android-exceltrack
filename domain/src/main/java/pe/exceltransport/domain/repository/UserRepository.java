@@ -13,4 +13,6 @@ public interface UserRepository {
 
     Observable<String> getEmailSaved();
 
+    Observable<Session> getSessionSaved();
+
 }

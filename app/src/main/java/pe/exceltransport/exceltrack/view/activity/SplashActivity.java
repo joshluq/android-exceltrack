@@ -25,6 +25,12 @@ public class SplashActivity extends BaseActivity implements SplashView {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
+
+    @Override
     protected void initUI() {
         presenter.fetchData();
     }
@@ -47,5 +53,10 @@ public class SplashActivity extends BaseActivity implements SplashView {
     @Override
     public void goToSignIn() {
         navigator.navigateToSignInActivity();
+    }
+
+    @Override
+    public void goToMain() {
+        navigator.navigateToMainActivity();
     }
 }

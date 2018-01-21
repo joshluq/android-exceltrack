@@ -19,6 +19,7 @@ public class DefaultException extends Exception {
 
     public enum Codes {
         NO_INTERNET(0),
+        NO_SESSION(1),
         UNAUTHORIZED(401),
         TIME_OUT(1000),
         DEFAULT_ERROR(1001),

@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.domain.Session;
-import pe.exceltransport.domain.User;
 import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.domain.interactor.GetEmailSaved;
 import pe.exceltransport.domain.interactor.SaveEmail;
@@ -134,7 +133,7 @@ public class SignInPresenter implements Presenter<SignInView> {
         @Override
         public void onComplete() {
             super.onComplete();
-            view.goToMainActivity();
+            view.goToMain();
         }
     }
 

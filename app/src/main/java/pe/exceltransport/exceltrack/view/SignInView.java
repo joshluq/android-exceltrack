@@ -11,6 +11,6 @@ public interface SignInView extends LoadDataView {
 
     void setEmail(String email);
 
-    void goToMainActivity();
+    void goToMain();
 
 }

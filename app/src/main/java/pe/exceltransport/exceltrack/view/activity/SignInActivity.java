@@ -74,7 +74,7 @@ public class SignInActivity extends BaseActivity implements SignInView{
     }
 
     @Override
-    public void goToMainActivity() {
+    public void goToMain() {
         navigator.navigateToMainActivity();
     }
 

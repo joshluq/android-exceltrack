@@ -47,4 +47,9 @@ public class UserDataRepository implements UserRepository {
         return sharedPreference.getEmailSaved();
     }
 
+    @Override
+    public Observable<Session> getSessionSaved() {
+        return sharedPreference.getSessionSaved().map(SessionEntityDataMapper::transform);
+    }
+
 }
