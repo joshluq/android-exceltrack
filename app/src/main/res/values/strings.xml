@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">exceltrack</string>
-    <item name="visible" type="id"/>
-    <item name="masked" type="id"/>
+    <item name="visible" type="id" />
+    <item name="masked" type="id" />
 
     <string name="text_email">Correo Electrónico</string>
     <string name="text_password">Constraseña</string>
@@ -10,5 +10,6 @@
     <string name="text_no_internet_message">No hay conexión.</string>
     <string name="text_unknown_message">Error desconocido.</string>
     <string name="text_invalid_credentials_message">Credenciales Inválidas.</string>
+    <string name="text_remember">recordar</string>
 
 </resources>

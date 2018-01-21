@@ -3,6 +3,7 @@ package pe.exceltransport.exceltrack.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.AppCompatCheckBox;
 
 import javax.inject.Inject;
 
@@ -20,6 +21,9 @@ public class SignInActivity extends BaseActivity implements SignInView{
 
     @BindView(R.id.til_password)
     TextInputLayout tilPassword;
+
+    @BindView(R.id.cb_remember)
+    AppCompatCheckBox cbRemember;
 
     @Inject
     SignInPresenter presenter;
@@ -39,8 +43,14 @@ public class SignInActivity extends BaseActivity implements SignInView{
     }
 
     @Override
-    protected void initUI() {
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
 
+    @Override
+    protected void initUI() {
+        presenter.GetEmailSaved();
     }
 
     @Override
@@ -51,6 +61,23 @@ public class SignInActivity extends BaseActivity implements SignInView{
     @Override
     public String getPassword() {
         return tilPassword.getEditText() != null ? tilPassword.getEditText().getText().toString().trim() : "";
+    }
+
+    @Override
+    public boolean isCheckedRemember() {
+        return cbRemember.isChecked();
+    }
+
+    @Override
+    public void setEmail(String email) {
+        if(tilEmail.getEditText() != null){
+            tilEmail.getEditText().setText(email);
+        }
+    }
+
+    @Override
+    public void goToMainActivity() {
+        navigator.navigateToMainActivity();
     }
 
     @Override
@@ -72,4 +99,5 @@ public class SignInActivity extends BaseActivity implements SignInView{
     public void showError(String message) {
 
     }
+
 }

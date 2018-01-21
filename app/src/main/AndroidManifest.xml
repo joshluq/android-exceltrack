@@ -23,6 +23,7 @@
             android:name=".view.activity.SignInActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.MainActivity"></activity>
     </application>
 
 </manifest>
