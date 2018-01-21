@@ -1,6 +1,5 @@
 package pe.exceltransport.exceltrack.navigator;
 
-import android.content.DialogInterface;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 

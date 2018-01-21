@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import pe.exceltransport.data.exception.DefaultException;
+import pe.exceltransport.domain.Session;
 import pe.exceltransport.domain.User;
 import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.domain.interactor.GetEmailSaved;
 import pe.exceltransport.domain.interactor.SaveEmail;
+import pe.exceltransport.domain.interactor.SaveSession;
 import pe.exceltransport.domain.interactor.SignIn;
 import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
 import pe.exceltransport.exceltrack.view.SignInView;
@@ -21,12 +23,14 @@ public class SignInPresenter implements Presenter<SignInView> {
     private final SignIn signIn;
     private final SaveEmail saveEmail;
     private final GetEmailSaved getEmailSaved;
+    private final SaveSession saveSession;
     private final Context context;
 
     @Inject
-    SignInPresenter(Context context, SignIn signIn, SaveEmail saveEmail, GetEmailSaved getEmailSaved) {
+    SignInPresenter(Context context, SignIn signIn, SaveEmail saveEmail, GetEmailSaved getEmailSaved, SaveSession saveSession) {
         this.context = context;
         this.signIn = signIn;
+        this.saveSession = saveSession;
         this.saveEmail = saveEmail;
         this.getEmailSaved = getEmailSaved;
     }
@@ -50,6 +54,7 @@ public class SignInPresenter implements Presenter<SignInView> {
     public void destroy() {
         view = null;
         signIn.dispose();
+        saveSession.dispose();
         saveEmail.dispose();
         getEmailSaved.dispose();
     }
@@ -60,6 +65,10 @@ public class SignInPresenter implements Presenter<SignInView> {
 
     public void signIn() {
         signIn.execute(new SignInObserver(), SignIn.Params.buildParams(view.getEmail(), view.getPassword()));
+    }
+
+    private void saveSession(Session session) {
+        saveSession.execute(new SaveSessionObserver(), SaveSession.Params.buildParams(session));
     }
 
     private void saveEmail() {
@@ -79,7 +88,7 @@ public class SignInPresenter implements Presenter<SignInView> {
         }
     }
 
-    private final class SignInObserver extends DefaultObserver<User> {
+    private final class SignInObserver extends DefaultObserver<Session> {
 
         @Override
         protected void onStart() {
@@ -94,14 +103,9 @@ public class SignInPresenter implements Presenter<SignInView> {
         }
 
         @Override
-        public void onNext(User user) {
-            super.onNext(user);
-            if (view.isCheckedRemember()) {
-                saveEmail();
-            } else {
-                deleteEmail();
-            }
-
+        public void onNext(Session session) {
+            super.onNext(session);
+            saveSession(session);
         }
 
         @Override
@@ -109,6 +113,19 @@ public class SignInPresenter implements Presenter<SignInView> {
             super.onError(exception);
             view.hideLoading();
             view.showError(ErrorMessageFactory.create(context, (DefaultException) exception));
+        }
+    }
+
+    private final class SaveSessionObserver extends DefaultObserver<Void> {
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+            if (view.isCheckedRemember()) {
+                saveEmail();
+            } else {
+                deleteEmail();
+            }
         }
     }
 
@@ -120,4 +137,6 @@ public class SignInPresenter implements Presenter<SignInView> {
             view.goToMainActivity();
         }
     }
+
+
 }
