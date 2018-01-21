@@ -9,7 +9,7 @@ import pe.exceltransport.domain.repository.UserRepository;
 public class RepositoryModule {
 
     @Provides
-    UserRepository providePlanetRepository(UserDataRepository repository) {
+    UserRepository provideUserRepository(UserDataRepository repository) {
         return repository;
     }
 }

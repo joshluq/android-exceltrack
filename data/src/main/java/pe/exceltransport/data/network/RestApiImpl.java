@@ -3,6 +3,7 @@ package pe.exceltransport.data.network;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
@@ -33,7 +34,7 @@ public class RestApiImpl implements RestApi {
             if (isThereNetworkConnection(emitter)) {
                 restService.signIn(body).enqueue(new DefaultCallback<BodyResponse<SignInResponse>>(emitter) {
                     @Override
-                    public void onResponse(Call<BodyResponse<SignInResponse>> call, Response<BodyResponse<SignInResponse>> response) {
+                    public void onResponse(@NonNull Call<BodyResponse<SignInResponse>> call, @NonNull Response<BodyResponse<SignInResponse>> response) {
                         super.onResponse(call, response);
                         BodyResponse<SignInResponse> body = response.body();
                         if (body != null && body.getBody() != null) {

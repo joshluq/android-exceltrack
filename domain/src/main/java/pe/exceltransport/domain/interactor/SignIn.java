@@ -13,16 +13,15 @@ public class SignIn extends UseCase<User, SignIn.Params> {
 
     private final UserRepository repository;
 
-
     @Inject
-    SignIn(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SignIn(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.repository = repository;
     }
 
     @Override
     Observable<User> buildUseCaseObservable(Params params) {
-        return null;
+        return repository.signIn(params.email,params.password,"");
     }
 
     public static final class Params {
@@ -31,12 +30,12 @@ public class SignIn extends UseCase<User, SignIn.Params> {
 
         private final String password;
 
-        public Params(String email, String password) {
+        Params(String email, String password) {
             this.email = email;
             this.password = password;
         }
 
-        public static Params getParams(String email, String password) {
+        public static Params buildParams(String email, String password) {
             return new Params(email, password);
         }
     }

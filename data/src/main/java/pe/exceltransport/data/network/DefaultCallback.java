@@ -1,5 +1,7 @@
 package pe.exceltransport.data.network;
 
+import android.support.annotation.NonNull;
+
 import io.reactivex.ObservableEmitter;
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.data.network.response.BodyResponse;
@@ -16,7 +18,7 @@ public class DefaultCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onResponse(Call<T> call, Response<T> response) {
+    public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
         if (!response.isSuccessful()) {
             emitter.onError(new DefaultException(DefaultException.Codes.DEFAULT_ERROR.getCode()));
         } else {
@@ -28,7 +30,7 @@ public class DefaultCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onFailure(Call<T> call, Throwable t) {
+    public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
         emitter.onError(new DefaultException(DefaultException.Codes.DEFAULT_ERROR.getCode()));
     }
 }

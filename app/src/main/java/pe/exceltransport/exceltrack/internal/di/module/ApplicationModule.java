@@ -1,5 +1,6 @@
 package pe.exceltransport.exceltrack.internal.di.module;
 
+import android.app.Application;
 import android.content.Context;
 
 import dagger.Module;
@@ -14,8 +15,8 @@ import pe.exceltransport.exceltrack.UIThread;
 public class ApplicationModule {
 
     @Provides
-    AndroidApplication provideApplication(AndroidApplication application) {
-        return application;
+    AndroidApplication provideApplication(Application application) {
+        return (AndroidApplication) application;
     }
 
     @Provides

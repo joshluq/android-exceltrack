@@ -15,7 +15,7 @@ android {
 
         debug {
             minifyEnabled false
-            buildConfigField 'String', 'API_URL', '"https://api.us.apiconnect.ibmcloud.com/interbankperu-spectrum-des/spectrum-catalog/ibk/v2/"'
+            buildConfigField 'String', 'API_URL', '"https://demo9600338.mockable.io/"'
             buildConfigField 'String', 'API_VERSION', '""'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
