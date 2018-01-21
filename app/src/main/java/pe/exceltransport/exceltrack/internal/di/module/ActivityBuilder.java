@@ -16,7 +16,7 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = SignInActivityModule.class)
     abstract SignInActivity bindSignInActivity();
 
-    @ContributesAndroidInjector(modules = MainActivityModule.class)
+    @ContributesAndroidInjector(modules = {MainActivityModule.class, MainFragmentProvider.class})
     abstract MainActivity bindMainActivity();
 
 }

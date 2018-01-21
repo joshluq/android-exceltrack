@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_trip_list"
-        android:title="@string/trip_list"
+        android:title="@string/text_trip_list"
         android:icon="@drawable/ic_list_numbered" />
+    <item android:id="@+id/action_statistics"
+        android:title="@string/text_record"
+        android:icon="@drawable/ic_event_note" />
     <item android:id="@+id/action_more"
-        android:title="@string/more"
+        android:title="@string/text_more"
         android:icon="@drawable/ic_more" />
 </menu>

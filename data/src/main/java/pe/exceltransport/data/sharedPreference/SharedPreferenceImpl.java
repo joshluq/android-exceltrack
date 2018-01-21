@@ -66,4 +66,9 @@ public class SharedPreferenceImpl implements SharedPreference {
             }
         });
     }
+
+    @Override
+    public Observable<Void> deleteSession() {
+        return null;
+    }
 }

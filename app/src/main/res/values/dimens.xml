@@ -10,4 +10,5 @@
     <dimen name="default_sp_4_4">16sp</dimen>
     <dimen name="default_dp_10_3">30dp</dimen>
     <dimen name="default_dp_10_4">40dp</dimen>
+    <dimen name="default_dp_10_1">10dp</dimen>
 </resources>

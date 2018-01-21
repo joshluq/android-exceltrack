@@ -52,4 +52,9 @@ public class UserDataRepository implements UserRepository {
         return sharedPreference.getSessionSaved().map(SessionEntityDataMapper::transform);
     }
 
+    @Override
+    public Observable<Void> deleteSessionSaved() {
+        return sharedPreference.saveSession("");
+    }
+
 }

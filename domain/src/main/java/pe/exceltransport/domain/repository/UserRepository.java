@@ -15,4 +15,6 @@ public interface UserRepository {
 
     Observable<Session> getSessionSaved();
 
+    Observable<Void> deleteSessionSaved();
+
 }
