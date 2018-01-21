@@ -5,9 +5,12 @@ import android.support.v7.app.AlertDialog;
 
 import javax.inject.Inject;
 
+import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.view.activity.BaseActivity;
 import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
+import pe.exceltransport.exceltrack.view.fragment.MoreFragment;
+import pe.exceltransport.exceltrack.view.fragment.TripListFragment;
 
 public class Navigator {
 
@@ -18,6 +21,7 @@ public class Navigator {
         this.activity = activity;
     }
 
+    //navigate to activities
     public void navigateToSignInActivity() {
         activity.finish();
         activity.startActivity(SignInActivity.getCallingIntent(activity));
@@ -28,6 +32,21 @@ public class Navigator {
         activity.startActivity(MainActivity.getCallingIntent(activity));
     }
 
+    //navigate to fragments
+    public void navigateToTripListFragment() {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, TripListFragment.newInstance(), TripListFragment.class.getSimpleName());
+        fragmentTransaction(transaction);
+    }
+
+    public void navigateToMoreFragment() {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, MoreFragment.newInstance(), MoreFragment.class.getSimpleName());
+        fragmentTransaction(transaction);
+    }
+
+
+    //show dialogs
     public void showAlertDialog(String title, String message, String positiveButtonText) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setTitle(title)
@@ -36,6 +55,8 @@ public class Navigator {
                 .setPositiveButton(positiveButtonText, (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
+
+
 
     private void fragmentTransaction(FragmentTransaction transaction) {
         if (activity.isStopped()) transaction.commitAllowingStateLoss();

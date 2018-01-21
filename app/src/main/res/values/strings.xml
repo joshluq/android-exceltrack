@@ -13,5 +13,11 @@
     <string name="text_remember">recordar</string>
     <string name="text_error">¡Ups!</string>
     <string name="text_got_it">Entendido</string>
+    <string name="trip_list">Mis viajes</string>
+    <string name="more">Mas</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_more_fragment">Hello more fragment</string>
 
 </resources>
