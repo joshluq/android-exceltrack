@@ -33,7 +33,12 @@ public class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(activity);
     }
 
+    protected void initUI(){
+
+    }
+
     public boolean isStopped() {
         return stopped;
     }
+
 }

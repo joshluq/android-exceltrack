@@ -13,6 +13,9 @@ public class DefaultException extends Exception {
         this.code = code;
     }
 
+    public int getCode() {
+        return code;
+    }
 
     public enum Codes {
         NO_INTERNET(0),

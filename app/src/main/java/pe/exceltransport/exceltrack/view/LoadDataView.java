@@ -10,6 +10,6 @@ public interface LoadDataView {
 
   void hideLoading();
 
-  void showNetworkError(String message);
+  void showError(String message);
 
 }
