@@ -12,7 +12,7 @@ import pe.exceltransport.exceltrack.view.SplashView;
 
 public class SplashPresenter implements Presenter<SplashView> {
 
-    private static final long SPLASH_DURATION = 3000;
+    private static final long SPLASH_DURATION = 1000;
 
     private SplashView view;
 

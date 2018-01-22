@@ -66,4 +66,5 @@ public class SharedPreferenceImpl implements SharedPreference {
             }
         });
     }
+
 }

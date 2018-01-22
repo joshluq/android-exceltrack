@@ -9,9 +9,14 @@
     <string name="text_default_exception_message">Ocurrió un error, intente nuevamente.</string>
     <string name="text_no_internet_message">No se pudo conectar, verifique su conexión a internet.</string>
     <string name="text_unknown_message">Error desconocido.</string>
-    <string name="text_invalid_credentials_message">Credenciales Inválidas.</string>
     <string name="text_remember">recordar</string>
     <string name="text_error">¡Ups!</string>
     <string name="text_got_it">Entendido</string>
+    <string name="text_trip_list">Mis viajes</string>
+    <string name="text_more">Mas</string>
+    <string name="text_record">Historial</string>
+
+
+    <string name="text_sign_out">Cerrar sesión</string>
 
 </resources>

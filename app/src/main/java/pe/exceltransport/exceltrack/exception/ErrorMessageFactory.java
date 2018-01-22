@@ -14,7 +14,7 @@ public class ErrorMessageFactory {
     } else if (exception.getCode() == DefaultException.Codes.DEFAULT_ERROR.getCode()) {
       return context.getString(R.string.text_default_exception_message);
     }else if(exception.getCode() == DefaultException.Codes.INVALID_CREDENTIALS.getCode()){
-      return context.getString(R.string.text_invalid_credentials_message);
+      return exception.getMessage();
     }
     return context.getString(R.string.text_unknown_message);
   }

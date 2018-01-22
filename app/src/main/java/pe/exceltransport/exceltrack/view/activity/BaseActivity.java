@@ -59,4 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public Navigator getNavigator() {
+        return navigator;
+    }
 }
