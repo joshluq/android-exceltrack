@@ -13,6 +13,4 @@ public interface SharedPreference {
 
     Observable<SessionEntity> getSessionSaved();
 
-    Observable<Void> deleteSession();
-
 }
