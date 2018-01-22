@@ -71,6 +71,7 @@ public class SignInActivity extends BaseActivity implements SignInView{
     @Override
     public void setEmail(String email) {
         if(tilEmail.getEditText() != null) tilEmail.getEditText().setText(email);
+        cbRemember.setChecked(!email.isEmpty());
     }
 
     @Override
