@@ -16,7 +16,7 @@ android {
         debug {
             minifyEnabled false
             buildConfigField 'String', 'API_URL', '"https://demo9600338.mockable.io/"'
-            buildConfigField 'String', 'API_VERSION', '""'
+            buildConfigField 'String', 'API_VERSION', '"v1/"'
             buildConfigField 'String', 'PREFERENCE_KEY', '"E304F7722C2492CCB4FB721581F97A5A139B964A20765C9D31B49916AA6BFAD5"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -25,7 +25,7 @@ android {
             minifyEnabled true
             buildConfigField 'String', 'API_URL', '""'
             buildConfigField 'String', 'API_VERSION', '""'
-            buildConfigField 'String', 'API_VERSION', '""'
+            buildConfigField 'String', 'PREFERENCE_KEY', '"E304F7722C2492CCB4FB721581F97A5A139B964A20765C9D31B49916AA6BFAD5"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -8,9 +8,9 @@ import pe.exceltransport.data.entity.UserEntity;
 public class SignInResponse {
 
     @SerializedName("session")
-    private SessionEntity sessionEntity;
+    private SessionEntity session;
 
     public SessionEntity getSessionEntity() {
-        return sessionEntity;
+        return session;
     }
 }
