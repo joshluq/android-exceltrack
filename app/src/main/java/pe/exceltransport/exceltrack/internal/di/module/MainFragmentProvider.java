@@ -11,7 +11,7 @@ public abstract class MainFragmentProvider {
     @ContributesAndroidInjector(modules = MoreFragmentModule.class)
     abstract MoreFragment provideMoreFragmentFactory();
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = TripListFragmentModule.class)
     abstract TripListFragment provideTripListFragmentFactory();
 
 }

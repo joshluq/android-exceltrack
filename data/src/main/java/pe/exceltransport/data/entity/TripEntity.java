@@ -21,4 +21,23 @@ public class TripEntity {
     @SerializedName("customer")
     private CustomerEntity customer;
 
+    public long getId() {
+        return id;
+    }
+
+    public LocationEntity getStart() {
+        return start;
+    }
+
+    public LocationEntity getFinish() {
+        return finish;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
 }

@@ -40,11 +40,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void initUI() {
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         bottomNavigation.setSelectedItemId(R.id.action_trip_list);

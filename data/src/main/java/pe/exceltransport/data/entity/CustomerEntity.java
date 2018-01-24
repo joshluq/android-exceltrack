@@ -7,4 +7,8 @@ public class CustomerEntity {
     @SerializedName("company")
     private CompanyEntity company;
 
+    public CompanyEntity getCompany() {
+        return company;
+    }
+
 }

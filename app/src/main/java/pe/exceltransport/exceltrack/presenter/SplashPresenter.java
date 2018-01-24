@@ -30,12 +30,12 @@ public class SplashPresenter implements Presenter<SplashView> {
 
     @Override
     public void resume() {
-
+        //default implementation
     }
 
     @Override
     public void pause() {
-
+        //default implementation
     }
 
     @Override
