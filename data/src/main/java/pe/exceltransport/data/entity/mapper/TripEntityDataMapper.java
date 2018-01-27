@@ -20,6 +20,7 @@ public class TripEntityDataMapper {
         trip.setStart(LocationEntityDataMapper.transform(entity.getStart()));
         trip.setFinish(LocationEntityDataMapper.transform(entity.getFinish()));
         trip.setStatus(transform(entity.getStatus()));
+        trip.setCustomer(CustomerEntityDataMapper.transform(entity.getCustomer()));
         return trip;
     }
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/customer_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_sp_4_4"
+        android:layout_marginStart="@dimen/default_dp_10_2"
+        android:layout_marginTop="@dimen/default_dp_10_1"
+        android:alpha="0.1"
+        android:background="@android:color/background_dark"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/tv_start_label"
+        android:layout_width="@dimen/default_dp_10_5"
+        android:layout_height="@dimen/default_sp_4_3"
+        android:layout_marginBottom="@dimen/default_dp_1_2"
+        android:layout_marginTop="@dimen/default_dp_1_2"
+        android:alpha="0.1"
+        android:background="@android:color/background_dark"
+        app:layout_constraintStart_toStartOf="@+id/customer_name"
+        app:layout_constraintTop_toBottomOf="@+id/customer_name" />
+
+    <View
+        android:id="@+id/tv_finish_label"
+        android:layout_width="@dimen/default_dp_10_5"
+        android:layout_height="@dimen/default_sp_4_3"
+        android:layout_marginBottom="@dimen/default_dp_10_1"
+        android:layout_marginTop="@dimen/default_dp_1_2"
+        android:alpha="0.1"
+        android:background="@android:color/background_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/customer_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_start_label" />
+
+    <View
+        android:id="@+id/tv_start"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_sp_4_3"
+        android:layout_marginStart="@dimen/default_dp_10_1"
+        android:alpha="0.1"
+        android:background="@android:color/background_dark"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintStart_toEndOf="@+id/tv_start_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_start_label" />
+
+    <TextView
+        android:id="@+id/tv_finish"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_sp_4_3"
+        android:layout_marginStart="@dimen/default_dp_10_1"
+        android:alpha="0.1"
+        android:background="@android:color/background_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_finish_label"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintStart_toEndOf="@+id/tv_finish_label"
+        tools:text="@tools:sample/lorem" />
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/default_dp_10_1"
+        android:layout_marginEnd="@dimen/default_dp_10_1"
+        android:layout_marginTop="@dimen/default_dp_10_1"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+</android.support.constraint.ConstraintLayout>

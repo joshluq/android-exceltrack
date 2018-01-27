@@ -1,6 +1,5 @@
 package pe.exceltransport.data.network;
 
-import pe.exceltransport.data.BuildConfig;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
 import pe.exceltransport.data.network.response.SignInResponse;
@@ -14,11 +13,10 @@ import retrofit2.http.Query;
 
 public interface RestService {
 
-    String API_URL = BuildConfig.API_URL + BuildConfig.API_VERSION;
-
     @POST("users/signIn")
     Call<BodyResponse<SignInResponse>> signIn(@Body SignInBody bodyLogin);
 
     @GET("users/{userId}/trips")
-    Call<BodyResponse<TripsResponse>> getTrips(@Path("customerId") long customerId, @Query("status") int status);
+    Call<BodyResponse<TripsResponse>> getTrips(@Path("userId") long customerId, @Query("status") int status);
+
 }

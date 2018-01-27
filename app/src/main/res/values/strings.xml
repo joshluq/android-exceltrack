@@ -18,5 +18,7 @@
 
 
     <string name="text_sign_out">Cerrar sesión</string>
+    <string name="text_start">Partida:</string>
+    <string name="text_finish">Llegada:</string>
 
 </resources>

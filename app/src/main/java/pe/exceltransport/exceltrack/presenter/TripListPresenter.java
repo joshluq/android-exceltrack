@@ -51,7 +51,7 @@ public class TripListPresenter implements Presenter<TripListView> {
         view = null;
     }
 
-    private void getPendingTrips() {
+    public void getPendingTrips() {
         getSessionSaved.execute(new GetSessionSavedObserver(), null);
     }
 

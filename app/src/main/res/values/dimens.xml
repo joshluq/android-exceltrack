@@ -2,13 +2,18 @@
 <resources>
 
     <dimen name="default_dp_1_1">1dp</dimen>
-
+    <dimen name="default_dp_1_2">2dp</dimen>
+    <dimen name="default_dp_1_4">4dp</dimen>
+    <dimen name="default_dp_10_1">10dp</dimen>
     <dimen name="default_dp_10_2">20dp</dimen>
-    <dimen name="default_dp_10_5">50dp</dimen>
-
-
-    <dimen name="default_sp_4_4">16sp</dimen>
     <dimen name="default_dp_10_3">30dp</dimen>
     <dimen name="default_dp_10_4">40dp</dimen>
-    <dimen name="default_dp_10_1">10dp</dimen>
+    <dimen name="default_dp_10_5">50dp</dimen>
+
+    <dimen name="default_dp_5_5">25dp</dimen>
+
+
+    <dimen name="default_sp_4_3">12sp</dimen>
+    <dimen name="default_sp_4_4">16sp</dimen>
+
 </resources>
