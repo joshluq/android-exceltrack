@@ -10,6 +10,7 @@
     <dimen name="default_dp_10_4">40dp</dimen>
     <dimen name="default_dp_10_5">50dp</dimen>
 
+    <dimen name="default_dp_5_3">15dp</dimen>
     <dimen name="default_dp_5_5">25dp</dimen>
 
 
