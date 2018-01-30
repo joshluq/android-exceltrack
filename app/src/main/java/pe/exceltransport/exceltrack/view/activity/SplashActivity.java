@@ -37,17 +37,17 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     @Override
     public void showLoading() {
-
+        //default implementation
     }
 
     @Override
     public void hideLoading() {
-
+        //default implementation
     }
 
     @Override
     public void showError(String message) {
-
+        //default implementation
     }
 
     @Override

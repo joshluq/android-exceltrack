@@ -3,11 +3,21 @@ package pe.exceltransport.domain;
 
 public class User {
 
+    private long id;
+
     private String name;
 
     private String lastName;
 
     private String email;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

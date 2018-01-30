@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import pe.exceltransport.data.network.RestApi;
 import pe.exceltransport.data.network.RestApiImpl;
 import pe.exceltransport.data.network.RestService;
+import pe.exceltransport.data.network.Url;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,7 +31,7 @@ public class NetworkModule {
     @Provides
     Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(RestService.API_URL)
+                .baseUrl(Url.ROOT.getValue())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
