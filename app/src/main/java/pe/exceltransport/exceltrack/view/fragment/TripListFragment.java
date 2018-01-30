@@ -102,7 +102,7 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
     private void setupRecyclerView() {
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTrips.setHasFixedSize(true);
-        rvTrips.setDemoChildCount(5);
+        rvTrips.setDemoChildCount(3);
         rvTrips.setDemoLayoutReference(R.layout.item_trip_list_demo);
         adapter.setListener(this);
         rvTrips.setAdapter(adapter);
@@ -110,6 +110,6 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
 
     @Override
     public void onItemClick(Trip trip) {
-        //default implementation
+        activity.getNavigator().navigateToTripDetailActivity(trip);
     }
 }

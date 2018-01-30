@@ -2,6 +2,7 @@
     package="pe.exceltransport.data">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:supportsRtl="true" />

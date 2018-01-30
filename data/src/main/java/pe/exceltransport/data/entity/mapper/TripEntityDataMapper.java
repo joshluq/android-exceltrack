@@ -17,6 +17,7 @@ public class TripEntityDataMapper {
             return null;
         }
         Trip trip = new Trip();
+        trip.setId(entity.getId());
         trip.setStart(LocationEntityDataMapper.transform(entity.getStart()));
         trip.setFinish(LocationEntityDataMapper.transform(entity.getFinish()));
         trip.setStatus(transform(entity.getStatus()));

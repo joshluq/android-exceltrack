@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import pe.exceltransport.domain.Trip;
 import pe.exceltransport.exceltrack.R;
 
@@ -56,7 +57,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ItemHolder> {
         }
     }
 
-    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ItemHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_customer_name)
         TextView tvCustomerName;
@@ -78,8 +79,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ItemHolder> {
             tvFinish.setText(trip.getFinish().getAddress());
         }
 
-        @Override
-        public void onClick(View v) {
+        @OnClick(R.id.v_item)
+        public void onClick() {
             if (listener != null) {
                 listener.onItemClick(list.get(getLayoutPosition()));
             }
