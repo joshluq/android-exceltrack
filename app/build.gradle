@@ -11,6 +11,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        resValue 'string', 'GOOGLE_GEO_API_KEY', '"AIzaSyDreZ06aspRoSLe95MyApmhE5KkLiPgLgI"'
+
     }
     buildTypes {
         release {
@@ -49,7 +52,7 @@ dependencies {
 
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.2'
 
-    compile 'com.github.po10cio:TimeLineView:1.0.2'
+    compile 'com.github.vipulasri:timelineview:1.0.6'
 
     implementation 'pub.devrel:easypermissions:1.1.3'
 
