@@ -9,6 +9,9 @@
     <dimen name="default_dp_10_3">30dp</dimen>
     <dimen name="default_dp_10_4">40dp</dimen>
     <dimen name="default_dp_10_5">50dp</dimen>
+    <dimen name="default_dp_10_6">60dp</dimen>
+    <dimen name="default_dp_10_7">70dp</dimen>
+    <dimen name="default_dp_10_34">340dp</dimen>
 
     <dimen name="default_dp_5_1">5dp</dimen>
     <dimen name="default_dp_5_3">15dp</dimen>
@@ -18,5 +21,6 @@
     <dimen name="default_sp_4_3">12sp</dimen>
     <dimen name="default_sp_4_4">16sp</dimen>
     <dimen name="default_sp_4_5">20sp</dimen>
+    <dimen name="default_sp_4_6">24sp</dimen>
 
 </resources>

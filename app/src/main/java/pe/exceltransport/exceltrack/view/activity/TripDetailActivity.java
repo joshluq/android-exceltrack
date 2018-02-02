@@ -2,7 +2,10 @@ package pe.exceltransport.exceltrack.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import pe.exceltransport.domain.Trip;
 import pe.exceltransport.exceltrack.R;
@@ -27,10 +31,20 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     @BindView(R.id.map_loading)
     View vMapLoading;
 
+    @BindView(R.id.v_bottom_sheet)
+    View vBottomSheet;
+
+    @BindView(R.id.fab_events)
+    FloatingActionButton fabEvents;
+
     @Inject
     TripDetailPresenter presenter;
 
     private Trip trip;
+
+    private GoogleMap googleMap;
+
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static Intent getCallingIntent(BaseActivity activity, Trip trip) {
         Intent intent = new Intent(activity, TripDetailActivity.class);
@@ -52,6 +66,17 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     @Override
     protected void initUI() {
         presenter.mapListeners();
+        setupBottomSheetBehavior();
+    }
+
+    @OnClick(R.id.ib_location)
+    public void onIbLocation(){
+        moveCamera();
+    }
+
+    @OnClick(R.id.fab_events)
+    public void onFabEvents(){
+        bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -71,11 +96,12 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.getUiSettings().setZoomControlsEnabled(false);
-        googleMap.getUiSettings().setZoomGesturesEnabled(false);
-        googleMap.getUiSettings().setRotateGesturesEnabled(false);
-        addMarkersToMap(googleMap);
-        moveCamera(googleMap);
+        this.googleMap = googleMap;
+        this.googleMap.getUiSettings().setZoomControlsEnabled(false);
+        this.googleMap.getUiSettings().setZoomGesturesEnabled(false);
+        this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
+        addMarkersToMap();
+        moveCamera();
     }
 
     @Override
@@ -92,7 +118,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
         trip = Trip.class.cast(getIntent().getSerializableExtra(Extra.TRIP.getValue()));
     }
 
-    private void addMarkersToMap(GoogleMap googleMap) {
+    private void addMarkersToMap() {
         addMarkerToMap(googleMap,
                 new LatLng(trip.getStart().getLatitude(), trip.getStart().getLongitude()),
                 getString(R.string.text_start),
@@ -112,12 +138,33 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
                 .snippet(snippet));
     }
 
-    private void moveCamera(GoogleMap googleMap) {
+    private void moveCamera() {
         LatLngBounds bounds = new LatLngBounds.Builder()
                 .include(new LatLng(trip.getStart().getLatitude(), trip.getStart().getLongitude()))
                 .include(new LatLng(trip.getFinish().getLatitude(), trip.getFinish().getLongitude()))
                 .build();
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
+    }
+
+    private void setupBottomSheetBehavior(){
+        bottomSheetBehavior = BottomSheetBehavior.from(vBottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
+                    fabEvents.animate().scaleX(0).scaleY(0).setDuration(300).start();
+                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
+                    fabEvents.animate().scaleX(1).scaleY(1).setDuration(300).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                //default implementation
+            }
+        });
     }
 
 }

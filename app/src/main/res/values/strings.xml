@@ -21,5 +21,6 @@
     <string name="text_start">Partida:</string>
     <string name="text_finish">Llegada:</string>
     <string name="text_trip_detail">Detalle del viaje</string>
+    <string name="trip_events">Eventos del viaje</string>
 
 </resources>
