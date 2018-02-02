@@ -16,6 +16,8 @@
     <dimen name="default_dp_5_1">5dp</dimen>
     <dimen name="default_dp_5_3">15dp</dimen>
     <dimen name="default_dp_5_5">25dp</dimen>
+    <dimen name="default_dp_5_6">35dp</dimen>
+    <dimen name="default_dp_5_13">65dp</dimen>
 
 
     <dimen name="default_sp_4_3">12sp</dimen>

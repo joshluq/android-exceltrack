@@ -9,7 +9,7 @@
     android:focusable="true"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="@dimen/default_dp_10_7"
+    app:behavior_peekHeight="@dimen/default_dp_5_13"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <TextView
@@ -34,6 +34,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_events_title" />
+        app:layout_constraintTop_toBottomOf="@+id/slideView" />
+
+    <ng.max.slideview.SlideView
+        android:id="@+id/slideView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_dp_10_5"
+        android:layout_marginStart="@dimen/default_dp_10_5"
+        android:layout_marginTop="@dimen/default_dp_10_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_events_title"
+        app:sv_buttonBackgroundColor="@color/colorPrimaryDark"
+        app:sv_buttonImage="@drawable/ic_check"
+        app:sv_reverseSlide="false"
+        app:sv_slideBackgroundColor="@color/white"
+        app:sv_slideText="Punto de Partida"
+        app:sv_slideTextColor="@color/colorPrimary"
+        app:sv_slideTextSize="@dimen/default_sp_4_4"
+        app:sv_strokeColor="@color/colorPrimary" />
 
 </android.support.constraint.ConstraintLayout>
