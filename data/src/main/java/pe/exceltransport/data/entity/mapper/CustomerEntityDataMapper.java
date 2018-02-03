@@ -5,12 +5,12 @@ import pe.exceltransport.domain.Customer;
 
 public class CustomerEntityDataMapper {
 
-    private CustomerEntityDataMapper(){
+    private CustomerEntityDataMapper() {
         //empty constructor
     }
 
-    static Customer transform(CustomerEntity entity){
-        if(entity == null){
+    static Customer transform(CustomerEntity entity) {
+        if (entity == null) {
             return null;
         }
         Customer customer = new Customer();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import pe.exceltransport.data.entity.SessionEntity;
+import pe.exceltransport.data.entity.TrackingEntity;
 import pe.exceltransport.data.entity.TripEntity;
 import pe.exceltransport.data.network.body.SignInBody;
 
@@ -15,5 +16,10 @@ public interface RestApi {
 
     //trip
     Observable<List<TripEntity>> getTrips(long userId, int status);
+
+
+    //tracking
+    Observable<TrackingEntity> getTracking(long tripId);
+
 
 }

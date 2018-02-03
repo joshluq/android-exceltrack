@@ -2,11 +2,21 @@ package pe.exceltransport.domain;
 
 public class Event {
 
+    private long id;
+
     private long creationDate;
 
     private String detail;
 
     private Type type;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getCreationDate() {
         return creationDate;

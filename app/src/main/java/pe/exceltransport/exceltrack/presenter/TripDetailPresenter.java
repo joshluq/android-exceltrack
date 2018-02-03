@@ -1,6 +1,7 @@
 package pe.exceltransport.exceltrack.presenter;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -11,6 +12,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import javax.inject.Inject;
 
+import pe.exceltransport.data.exception.DefaultException;
+import pe.exceltransport.domain.Tracking;
+import pe.exceltransport.domain.interactor.DefaultObserver;
+import pe.exceltransport.domain.interactor.GetTracking;
+import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
 import pe.exceltransport.exceltrack.view.TripDetailView;
 
 public class TripDetailPresenter implements Presenter<TripDetailView> {
@@ -24,11 +30,16 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
     private boolean isMapReady;
     private GoogleMap googleMap;
 
+    private final GetTracking getTracking;
+    private final Context context;
+
     @Inject
-    public TripDetailPresenter() {
-        isViewReady = false;
-        isMapReady = false;
-        googleMap = null;
+    public TripDetailPresenter(Context context, GetTracking getTracking) {
+        this.context = context;
+        this.getTracking = getTracking;
+        this.isViewReady = false;
+        this.isMapReady = false;
+        this.googleMap = null;
     }
 
     @Override
@@ -54,6 +65,7 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
         isViewReady = false;
         isMapReady = false;
         googleMap = null;
+        getTracking.dispose();
     }
 
     public void mapListeners() {
@@ -74,6 +86,10 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
         }
     }
 
+    public void getTracking(){
+        getTracking.execute(new GetTrackingObserver(), GetTracking.Params.buildParams(view.getTripId()));
+    }
+
     private final class GlobalLayoutObserver implements ViewTreeObserver.OnGlobalLayoutListener {
 
         @Override
@@ -91,6 +107,34 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
             TripDetailPresenter.this.googleMap = googleMap;
             TripDetailPresenter.this.isMapReady = true;
             fireCallbackIfReady();
+        }
+    }
+
+    private final class GetTrackingObserver extends DefaultObserver<Tracking> {
+
+        @Override
+        protected void onStart() {
+            super.onStart();
+            view.showTrackingLoading();
+        }
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+            view.hideTrackingLoading();
+        }
+
+        @Override
+        public void onNext(Tracking tracking) {
+            super.onNext(tracking);
+            view.renderTracking(tracking);
+        }
+
+        @Override
+        public void onError(Throwable exception) {
+            super.onError(exception);
+            view.hideLoading();
+            view.showError(ErrorMessageFactory.create(context, (DefaultException) exception));
         }
     }
 

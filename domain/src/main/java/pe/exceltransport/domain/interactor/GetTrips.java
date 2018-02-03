@@ -2,6 +2,8 @@ package pe.exceltransport.domain.interactor;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import pe.exceltransport.domain.Trip;
 import pe.exceltransport.domain.executor.PostExecutionThread;
@@ -12,6 +14,7 @@ public class GetTrips extends UseCase<List<Trip>,GetTrips.Params> {
 
     private final TripRepository repository;
 
+    @Inject
     public GetTrips(TripRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.repository = repository;

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class CompanyEntity {
 
     @SerializedName("id")
-    private int id;
+    private long id;
 
     @SerializedName("businessName")
     private String businessName;
@@ -19,7 +19,7 @@ public class CompanyEntity {
     @SerializedName("registeredAddress")
     private LocationEntity registeredAddress;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

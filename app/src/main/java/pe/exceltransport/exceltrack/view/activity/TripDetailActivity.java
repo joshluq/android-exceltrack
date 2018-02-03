@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,16 +23,22 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
+import pe.exceltransport.domain.Event;
+import pe.exceltransport.domain.Tracking;
 import pe.exceltransport.domain.Trip;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.TripDetailPresenter;
 import pe.exceltransport.exceltrack.view.TripDetailView;
+import pe.exceltransport.exceltrack.view.adapter.EventTimeLineAdapter;
 import pe.exceltransport.exceltrack.view.util.Extra;
 
 public class TripDetailActivity extends BaseActivity implements TripDetailView {
 
     @BindView(R.id.map_loading)
     View vMapLoading;
+
+    @BindView(R.id.event_loading)
+    View vEventLoading;
 
     @BindView(R.id.v_bottom_sheet)
     View vBottomSheet;
@@ -47,8 +55,14 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     @BindView(R.id.tv_finish)
     TextView tvFinish;
 
+    @BindView(R.id.rv_tracking)
+    RecyclerView rvTracking;
+
     @Inject
     TripDetailPresenter presenter;
+
+    @Inject
+    EventTimeLineAdapter trackingAdapter;
 
     private Trip trip;
 
@@ -76,10 +90,12 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     @Override
     protected void initUI() {
         presenter.mapListeners();
+        presenter.getTracking();
         setupBottomSheetBehavior();
         tvCustomerName.setText(trip.getCustomer().getCompany().getTradeName());
         tvStart.setText(trip.getStart().getAddress());
         tvFinish.setText(trip.getFinish().getAddress());
+        setupRecyclerView();
     }
 
     @OnClick(R.id.ib_location)
@@ -127,6 +143,21 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
         vMapLoading.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showTrackingLoading() {
+        vEventLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideTrackingLoading() {
+        vEventLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void renderTracking(Tracking tracking) {
+        trackingAdapter.bindList(tracking.getEvents(), Event.Type.TRACKING);
+    }
+
     private void getExtras() {
         trip = Trip.class.cast(getIntent().getSerializableExtra(Extra.TRIP.getValue()));
     }
@@ -162,7 +193,6 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     private void setupBottomSheetBehavior(){
         bottomSheetBehavior = BottomSheetBehavior.from(vBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -178,6 +208,12 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
                 //default implementation
             }
         });
+    }
+
+    private void setupRecyclerView() {
+        rvTracking.setLayoutManager(new LinearLayoutManager(this));
+        rvTracking.setHasFixedSize(true);
+        rvTracking.setAdapter(trackingAdapter);
     }
 
 }

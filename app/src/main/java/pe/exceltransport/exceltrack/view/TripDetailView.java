@@ -3,6 +3,8 @@ package pe.exceltransport.exceltrack.view;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
+import pe.exceltransport.domain.Tracking;
+
 public interface TripDetailView extends LoadDataView {
 
     long getTripId();
@@ -14,5 +16,11 @@ public interface TripDetailView extends LoadDataView {
     void showMapLoading();
 
     void hideMapLoading();
+
+    void showTrackingLoading();
+
+    void hideTrackingLoading();
+
+    void renderTracking(Tracking tracking);
 
 }
