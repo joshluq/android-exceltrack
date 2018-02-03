@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +37,15 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
 
     @BindView(R.id.fab_events)
     FloatingActionButton fabEvents;
+
+    @BindView(R.id.tv_customer_name)
+    TextView tvCustomerName;
+
+    @BindView(R.id.tv_start)
+    TextView tvStart;
+
+    @BindView(R.id.tv_finish)
+    TextView tvFinish;
 
     @Inject
     TripDetailPresenter presenter;
@@ -67,6 +77,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
     protected void initUI() {
         presenter.mapListeners();
         setupBottomSheetBehavior();
+        tvCustomerName.setText(trip.getCustomer().getCompany().getTradeName());
+        tvStart.setText(trip.getStart().getAddress());
+        tvFinish.setText(trip.getFinish().getAddress());
     }
 
     @OnClick(R.id.ib_location)

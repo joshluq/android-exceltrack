@@ -19,5 +19,4 @@
         app:layout_anchor="@+id/v_bottom_sheet"
         app:layout_anchorGravity="top|end" />
 
-
 </android.support.design.widget.CoordinatorLayout>

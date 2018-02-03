@@ -14,6 +14,8 @@ public class Trip implements Serializable{
 
     private Customer customer;
 
+    private Tracking tracking;
+
     public long getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class Trip implements Serializable{
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
+    }
+
+    public void setTracking(Tracking tracking) {
+        this.tracking = tracking;
     }
 
     public enum Status{
