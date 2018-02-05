@@ -1,5 +1,6 @@
 package pe.exceltransport.exceltrack.navigator;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 
@@ -61,6 +62,17 @@ public class Navigator {
                 .setPositiveButton(positiveButtonText, (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
+
+    public void showAlertDialog(String title, String message, String positiveButtonText, DialogInterface.OnClickListener positiveAction) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(R.string.text_negative_button, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(positiveButtonText, positiveAction);
+        builder.create().show();
+    }
+
 
 
     private void fragmentTransaction(FragmentTransaction transaction) {

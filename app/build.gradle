@@ -52,9 +52,9 @@ dependencies {
 
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.2'
 
-    compile 'com.github.vipulasri:timelineview:1.0.6'
+    implementation 'com.github.vipulasri:timelineview:1.0.6'
 
-    implementation 'com.github.MAXDeliveryNG:slideview:1.1.0'
+    implementation 'com.ebanx:swipe-button:0.8.3'
 
     implementation 'pub.devrel:easypermissions:1.1.3'
 

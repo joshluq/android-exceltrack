@@ -20,7 +20,7 @@
         android:layout_marginEnd="@dimen/default_dp_10_1"
         android:layout_marginStart="@dimen/default_dp_10_1"
         android:layout_marginTop="@dimen/default_dp_10_1"
-        android:text="@string/trip_events"
+        android:text="@string/text_trip_events"
         android:textSize="@dimen/default_sp_4_5"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slideView"
+        app:layout_constraintTop_toBottomOf="@+id/swipe_button"
         tools:listitem="@layout/item_event_timeline" />
 
     <ProgressBar
@@ -48,23 +48,31 @@
         app:layout_constraintStart_toStartOf="@+id/rv_tracking"
         app:layout_constraintTop_toTopOf="@+id/rv_tracking" />
 
-    <ng.max.slideview.SlideView
-        android:id="@+id/slideView"
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipe_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/default_dp_10_5"
         android:layout_marginStart="@dimen/default_dp_10_5"
         android:layout_marginTop="@dimen/default_dp_10_3"
+        app:button_background="@drawable/background_swipe_button_item"
+        app:button_image_height="@dimen/default_dp_10_4"
+        app:button_image_width="@dimen/default_dp_10_4"
+        app:button_left_padding="@dimen/default_dp_5_1"
+        app:button_right_padding="@dimen/default_dp_5_1"
+        app:button_top_padding="@dimen/default_dp_5_1"
+        app:button_bottom_padding="@dimen/default_dp_5_1"
+        app:button_image_disabled="@drawable/ic_check"
+        app:has_activate_state="true"
+        app:initial_state="disabled"
+        app:inner_text="Punto de Partida"
+        app:inner_text_background="@drawable/background_swipe_button"
+        app:inner_text_bottom_padding="@dimen/default_dp_10_1"
+        app:inner_text_color="@color/colorPrimary"
+        app:inner_text_size="@dimen/default_sp_4_4"
+        app:inner_text_top_padding="@dimen/default_dp_10_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_events_title"
-        app:sv_buttonBackgroundColor="@color/colorPrimaryDark"
-        app:sv_buttonImage="@drawable/ic_check"
-        app:sv_reverseSlide="false"
-        app:sv_slideBackgroundColor="@color/white"
-        app:sv_slideText="Punto de Partida"
-        app:sv_slideTextColor="@color/colorPrimary"
-        app:sv_slideTextSize="@dimen/default_sp_4_4"
-        app:sv_strokeColor="@color/colorPrimary" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_events_title" />
 
 </android.support.constraint.ConstraintLayout>

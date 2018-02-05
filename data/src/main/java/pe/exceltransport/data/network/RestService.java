@@ -1,5 +1,6 @@
 package pe.exceltransport.data.network;
 
+import pe.exceltransport.data.network.body.EventBody;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
 import pe.exceltransport.data.network.response.SignInResponse;
@@ -22,5 +23,8 @@ public interface RestService {
 
     @GET("trips/{tripId}/tracking")
     Call<BodyResponse<TrackingResponse>> getTracking(@Path("tripId") long tripId);
+
+    @POST("tracking/{trackingId}/event")
+    Call<BodyResponse<TrackingResponse>> addEvent(@Path("trackingId") long trackingId, @Body EventBody body);
 
 }

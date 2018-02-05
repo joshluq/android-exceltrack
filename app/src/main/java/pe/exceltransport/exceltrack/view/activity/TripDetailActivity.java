@@ -1,5 +1,6 @@
 package pe.exceltransport.exceltrack.view.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ebanx.swipebtn.OnActiveListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,7 +35,8 @@ import pe.exceltransport.exceltrack.view.TripDetailView;
 import pe.exceltransport.exceltrack.view.adapter.EventTimeLineAdapter;
 import pe.exceltransport.exceltrack.view.util.Extra;
 
-public class TripDetailActivity extends BaseActivity implements TripDetailView {
+
+public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener {
 
     @BindView(R.id.map_loading)
     View vMapLoading;
@@ -57,6 +61,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
 
     @BindView(R.id.rv_tracking)
     RecyclerView rvTracking;
+
+    @BindView(R.id.swipe_button)
+    SwipeButton swipeButton;
 
     @Inject
     TripDetailPresenter presenter;
@@ -96,15 +103,16 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
         tvStart.setText(trip.getStart().getAddress());
         tvFinish.setText(trip.getFinish().getAddress());
         setupRecyclerView();
+        setupSwipeButton();
     }
 
     @OnClick(R.id.ib_location)
-    public void onIbLocation(){
+    public void onIbLocation() {
         moveCamera();
     }
 
     @OnClick(R.id.fab_events)
-    public void onFabEvents(){
+    public void onFabEvents() {
         bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
     }
 
@@ -190,7 +198,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
     }
 
-    private void setupBottomSheetBehavior(){
+    private void setupBottomSheetBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(vBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -216,4 +224,20 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView {
         rvTracking.setAdapter(trackingAdapter);
     }
 
+    private void setupSwipeButton(){
+        swipeButton.setOnActiveListener(this);
+    }
+
+    @Override
+    public void onActive() {
+        navigator.showAlertDialog("Mensaje",
+                "¿Esta seguro de cambiar el estado?",
+                "Si, Estoy Seguro",
+                this);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+    }
 }
