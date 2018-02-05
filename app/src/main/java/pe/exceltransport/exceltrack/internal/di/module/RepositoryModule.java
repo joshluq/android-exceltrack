@@ -2,8 +2,10 @@ package pe.exceltransport.exceltrack.internal.di.module;
 
 import dagger.Module;
 import dagger.Provides;
+import pe.exceltransport.data.repository.TrackingDataRepository;
 import pe.exceltransport.data.repository.TripDataRepository;
 import pe.exceltransport.data.repository.UserDataRepository;
+import pe.exceltransport.domain.repository.TrackingRepository;
 import pe.exceltransport.domain.repository.TripRepository;
 import pe.exceltransport.domain.repository.UserRepository;
 
@@ -17,6 +19,11 @@ public class RepositoryModule {
 
     @Provides
     TripRepository provideTripRepository(TripDataRepository repository) {
+        return repository;
+    }
+
+    @Provides
+    TrackingRepository provideTrackingRepository(TrackingDataRepository repository) {
         return repository;
     }
 }

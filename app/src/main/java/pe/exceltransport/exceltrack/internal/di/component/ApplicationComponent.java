@@ -11,7 +11,7 @@ import pe.exceltransport.exceltrack.internal.di.module.ApplicationModule;
 import pe.exceltransport.exceltrack.internal.di.module.NetworkModule;
 import pe.exceltransport.exceltrack.internal.di.module.RepositoryModule;
 
-@Component(modules = {AndroidInjectionModule.class, ApplicationModule.class, NetworkModule.class, RepositoryModule.class, ActivityBuilder.class})
+@Component(modules = {AndroidInjectionModule.class, ApplicationModule.class, NetworkModule.class,RepositoryModule.class, ActivityBuilder.class})
 public interface ApplicationComponent {
 
     @Component.Builder

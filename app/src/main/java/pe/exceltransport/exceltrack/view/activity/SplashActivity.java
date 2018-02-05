@@ -1,6 +1,7 @@
 package pe.exceltransport.exceltrack.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
@@ -15,7 +16,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
     SplashPresenter presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -33,16 +34,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
     @Override
     protected void initUI() {
         presenter.fetchData();
-    }
-
-    @Override
-    public void showLoading() {
-        //default implementation
-    }
-
-    @Override
-    public void hideLoading() {
-        //default implementation
     }
 
     @Override

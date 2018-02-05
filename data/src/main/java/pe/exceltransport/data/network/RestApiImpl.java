@@ -12,11 +12,13 @@ import javax.inject.Inject;
 import io.reactivex.Emitter;
 import io.reactivex.Observable;
 import pe.exceltransport.data.entity.SessionEntity;
+import pe.exceltransport.data.entity.TrackingEntity;
 import pe.exceltransport.data.entity.TripEntity;
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
 import pe.exceltransport.data.network.response.SignInResponse;
+import pe.exceltransport.data.network.response.TrackingResponse;
 import pe.exceltransport.data.network.response.TripsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -62,6 +64,25 @@ public class RestApiImpl implements RestApi {
                         BodyResponse<TripsResponse> bodyResponse = response.body();
                         if (bodyResponse != null && bodyResponse.getBody() != null) {
                             emitter.onNext(bodyResponse.getBody().getTrips());
+                            emitter.onComplete();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<TrackingEntity> getTracking(long tripId) {
+        return Observable.create(emitter -> {
+            if (isThereNetworkConnection(emitter)) {
+                restService.getTracking(tripId).enqueue(new DefaultCallback<BodyResponse<TrackingResponse>>(emitter) {
+                    @Override
+                    public void onResponse(@NonNull Call<BodyResponse<TrackingResponse>> call, @NonNull Response<BodyResponse<TrackingResponse>> response) {
+                        super.onResponse(call, response);
+                        BodyResponse<TrackingResponse> bodyResponse = response.body();
+                        if (bodyResponse != null && bodyResponse.getBody() != null) {
+                            emitter.onNext(bodyResponse.getBody().getTrackin());
                             emitter.onComplete();
                         }
                     }

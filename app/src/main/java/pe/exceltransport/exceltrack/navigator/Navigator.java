@@ -1,14 +1,17 @@
 package pe.exceltransport.exceltrack.navigator;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 
 import javax.inject.Inject;
 
+import pe.exceltransport.domain.Trip;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.view.activity.BaseActivity;
 import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
+import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
 import pe.exceltransport.exceltrack.view.fragment.MoreFragment;
 import pe.exceltransport.exceltrack.view.fragment.TripListFragment;
 
@@ -32,6 +35,10 @@ public class Navigator {
         activity.startActivity(MainActivity.getCallingIntent(activity));
     }
 
+    public void navigateToTripDetailActivity(Trip trip) {
+        activity.startActivity(TripDetailActivity.getCallingIntent(activity, trip));
+    }
+
     //navigate to fragments
     public void navigateToTripListFragment() {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
@@ -53,6 +60,16 @@ public class Navigator {
                 .setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton(positiveButtonText, (dialog, which) -> dialog.dismiss());
+        builder.create().show();
+    }
+
+    public void showAlertDialog(String title, String message, String positiveButtonText, DialogInterface.OnClickListener positiveAction) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(R.string.text_negative_button, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(positiveButtonText, positiveAction);
         builder.create().show();
     }
 

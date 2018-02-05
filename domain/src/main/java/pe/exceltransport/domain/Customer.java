@@ -1,6 +1,8 @@
 package pe.exceltransport.domain;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable{
 
     private Company company;
 

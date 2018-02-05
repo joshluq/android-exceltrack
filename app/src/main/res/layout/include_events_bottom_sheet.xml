@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/v_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="@dimen/default_dp_5_13"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/tv_events_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_dp_10_1"
+        android:layout_marginStart="@dimen/default_dp_10_1"
+        android:layout_marginTop="@dimen/default_dp_10_1"
+        android:text="@string/text_trip_events"
+        android:textSize="@dimen/default_sp_4_5"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_tracking"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/default_dp_10_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipe_button"
+        tools:listitem="@layout/item_event_timeline" />
+
+    <ProgressBar
+        android:id="@+id/event_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_tracking"
+        app:layout_constraintEnd_toEndOf="@+id/rv_tracking"
+        app:layout_constraintStart_toStartOf="@+id/rv_tracking"
+        app:layout_constraintTop_toTopOf="@+id/rv_tracking" />
+
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipe_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_dp_10_5"
+        android:layout_marginStart="@dimen/default_dp_10_5"
+        android:layout_marginTop="@dimen/default_dp_10_3"
+        app:button_background="@drawable/background_swipe_button_item"
+        app:button_image_height="@dimen/default_dp_10_4"
+        app:button_image_width="@dimen/default_dp_10_4"
+        app:button_left_padding="@dimen/default_dp_5_1"
+        app:button_right_padding="@dimen/default_dp_5_1"
+        app:button_top_padding="@dimen/default_dp_5_1"
+        app:button_bottom_padding="@dimen/default_dp_5_1"
+        app:button_image_disabled="@drawable/ic_check"
+        app:has_activate_state="true"
+        app:initial_state="disabled"
+        app:inner_text="Punto de Partida"
+        app:inner_text_background="@drawable/background_swipe_button"
+        app:inner_text_bottom_padding="@dimen/default_dp_10_1"
+        app:inner_text_color="@color/colorPrimary"
+        app:inner_text_size="@dimen/default_sp_4_4"
+        app:inner_text_top_padding="@dimen/default_dp_10_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_events_title" />
+
+</android.support.constraint.ConstraintLayout>

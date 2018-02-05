@@ -1,8 +1,10 @@
 package pe.exceltransport.data.network;
 
+import pe.exceltransport.data.network.body.EventBody;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
 import pe.exceltransport.data.network.response.SignInResponse;
+import pe.exceltransport.data.network.response.TrackingResponse;
 import pe.exceltransport.data.network.response.TripsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,5 +20,11 @@ public interface RestService {
 
     @GET("users/{userId}/trips")
     Call<BodyResponse<TripsResponse>> getTrips(@Path("userId") long customerId, @Query("status") int status);
+
+    @GET("trips/{tripId}/tracking")
+    Call<BodyResponse<TrackingResponse>> getTracking(@Path("tripId") long tripId);
+
+    @POST("tracking/{trackingId}/event")
+    Call<BodyResponse<TrackingResponse>> addEvent(@Path("trackingId") long trackingId, @Body EventBody body);
 
 }

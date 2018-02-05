@@ -1,6 +1,10 @@
 package pe.exceltransport.domain;
 
-public class Trip {
+import java.io.Serializable;
+
+public class Trip implements Serializable{
+
+    private long id;
 
     private Location start;
 
@@ -9,6 +13,16 @@ public class Trip {
     private Status status;
 
     private Customer customer;
+
+    private Tracking tracking;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Location getStart() {
         return start;
@@ -40,6 +54,14 @@ public class Trip {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
+    }
+
+    public void setTracking(Tracking tracking) {
+        this.tracking = tracking;
     }
 
     public enum Status{
