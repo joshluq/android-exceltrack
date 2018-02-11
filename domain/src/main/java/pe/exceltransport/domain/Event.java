@@ -1,6 +1,8 @@
 package pe.exceltransport.domain;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
 
     private long id;
 
@@ -52,7 +54,7 @@ public class Event {
         this.location = location;
     }
 
-    public enum Type {
+    public enum Type implements Serializable {
         TRACKING,
         INCIDENCE
     }

@@ -2,7 +2,7 @@ package pe.exceltransport.domain;
 
 import java.io.Serializable;
 
-public class Location implements Serializable{
+public class Location implements Serializable {
 
     private double latitude;
 
@@ -21,7 +21,6 @@ public class Location implements Serializable{
     public String getAddress() {
         return address;
     }
-
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;

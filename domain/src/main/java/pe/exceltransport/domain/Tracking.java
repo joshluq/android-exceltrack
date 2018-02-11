@@ -1,9 +1,10 @@
 package pe.exceltransport.domain;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Tracking {
+public class Tracking implements Serializable {
 
     private long trackingId;
 
@@ -35,7 +36,7 @@ public class Tracking {
         this.events = events;
     }
 
-    public enum Status{
+    public enum Status implements Serializable {
         CREATED,
         INITIATED,
         STARTING,

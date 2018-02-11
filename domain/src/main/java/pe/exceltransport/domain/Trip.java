@@ -2,7 +2,7 @@ package pe.exceltransport.domain;
 
 import java.io.Serializable;
 
-public class Trip implements Serializable{
+public class Trip implements Serializable {
 
     private long id;
 
@@ -64,7 +64,7 @@ public class Trip implements Serializable{
         this.tracking = tracking;
     }
 
-    public enum Status{
+    public enum Status implements Serializable {
         PENDING,
         ACTIVE
     }
