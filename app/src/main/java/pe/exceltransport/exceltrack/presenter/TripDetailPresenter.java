@@ -13,7 +13,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import javax.inject.Inject;
 
 import pe.exceltransport.data.exception.DefaultException;
+import pe.exceltransport.domain.Event;
 import pe.exceltransport.domain.Tracking;
+import pe.exceltransport.domain.interactor.AddEvent;
 import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.domain.interactor.GetTracking;
 import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
@@ -31,12 +33,14 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
     private GoogleMap googleMap;
 
     private final GetTracking getTracking;
+    private final AddEvent addEvent;
     private final Context context;
 
     @Inject
-    public TripDetailPresenter(Context context, GetTracking getTracking) {
+    public TripDetailPresenter(Context context, GetTracking getTracking, AddEvent addEvent) {
         this.context = context;
         this.getTracking = getTracking;
+        this.addEvent = addEvent;
         this.isViewReady = false;
         this.isMapReady = false;
         this.googleMap = null;
@@ -66,6 +70,7 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
         isMapReady = false;
         googleMap = null;
         getTracking.dispose();
+        addEvent.dispose();
     }
 
     public void mapListeners() {
@@ -86,8 +91,14 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
         }
     }
 
-    public void getTracking(){
+    public void getTracking() {
         getTracking.execute(new GetTrackingObserver(), GetTracking.Params.buildParams(view.getTripId()));
+    }
+
+    public void addTrackingEvent() {
+        Event event = new Event();
+        event.setType(Event.Type.TRACKING);
+        addEvent.execute(new AddEventObserver(), AddEvent.Params.buildParams(view.getTrackingId(), event));
     }
 
     private final class GlobalLayoutObserver implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -110,7 +121,7 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
         }
     }
 
-    private final class GetTrackingObserver extends DefaultObserver<Tracking> {
+    private class GetTrackingObserver extends DefaultObserver<Tracking> {
 
         @Override
         protected void onStart() {
@@ -135,6 +146,27 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
             super.onError(exception);
             view.hideLoading();
             view.showError(ErrorMessageFactory.create(context, (DefaultException) exception));
+        }
+    }
+
+    private final class AddEventObserver extends GetTrackingObserver {
+
+        @Override
+        protected void onStart() {
+            super.onStart();
+            view.showLoading();
+        }
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+            view.hideLoading();
+        }
+
+        @Override
+        public void onNext(Tracking tracking) {
+            super.onNext(tracking);
+            view.showTracking();
         }
     }
 

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <fragment
         android:id="@+id/map"
@@ -43,61 +44,33 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.70" />
 
-    <TextView
-        android:id="@+id/tv_customer_name"
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipe_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_dp_10_1"
-        android:textSize="@dimen/default_sp_4_5"
-        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/default_dp_10_5"
+        android:layout_marginStart="@dimen/default_dp_10_5"
+        android:layout_marginTop="@dimen/default_dp_10_1"
+        android:visibility="invisible"
+        app:button_background="@drawable/background_swipe_button_item"
+        app:button_bottom_padding="@dimen/default_dp_5_1"
+        app:button_image_disabled="@drawable/ic_arrow_right_white"
+        app:button_image_enabled="@drawable/ic_check"
+        app:button_image_height="@dimen/default_dp_10_4"
+        app:button_image_width="@dimen/default_dp_10_4"
+        app:button_left_padding="@dimen/default_dp_5_1"
+        app:button_right_padding="@dimen/default_dp_5_1"
+        app:button_top_padding="@dimen/default_dp_5_1"
+        app:has_activate_state="true"
+        app:initial_state="disabled"
+        app:inner_text="Punto de Partida"
+        app:inner_text_background="@drawable/background_swipe_button"
+        app:inner_text_bottom_padding="@dimen/default_dp_10_1"
+        app:inner_text_color="@color/colorPrimary"
+        app:inner_text_size="@dimen/default_sp_4_4"
+        app:inner_text_top_padding="@dimen/default_dp_10_1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:text="@tools:sample/full_names" />
-
-    <TextView
-        android:id="@+id/tv_start_label"
-        android:layout_width="@dimen/default_dp_10_5"
-        android:layout_height="wrap_content"
-        android:text="@string/text_start"
-        android:textSize="@dimen/default_sp_4_3"
-        app:layout_constraintStart_toStartOf="@+id/tv_customer_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_customer_name" />
-
-    <TextView
-        android:id="@+id/tv_finish_label"
-        android:layout_width="@dimen/default_dp_10_5"
-        android:layout_height="wrap_content"
-        android:text="@string/text_finish"
-        android:textSize="@dimen/default_sp_4_3"
-        app:layout_constraintStart_toStartOf="@+id/tv_customer_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_start_label" />
-
-    <TextView
-        android:id="@+id/tv_start"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/default_dp_10_1"
-        android:layout_marginStart="@dimen/default_dp_10_1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="@dimen/default_sp_4_3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_start_label"
-        app:layout_constraintTop_toTopOf="@+id/tv_start_label"
-        tools:text="@tools:sample/lorem" />
-
-    <TextView
-        android:id="@+id/tv_finish"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/default_dp_10_1"
-        android:layout_marginStart="@dimen/default_dp_10_1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="@dimen/default_sp_4_3"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_finish_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_finish_label"
-        tools:text="@tools:sample/lorem" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
 </android.support.constraint.ConstraintLayout>

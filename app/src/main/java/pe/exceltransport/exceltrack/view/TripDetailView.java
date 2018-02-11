@@ -9,6 +9,8 @@ public interface TripDetailView extends LoadDataView {
 
     long getTripId();
 
+    long getTrackingId();
+
     SupportMapFragment getSupportMapFragment();
 
     void onMapReady(GoogleMap googleMap);
@@ -23,4 +25,5 @@ public interface TripDetailView extends LoadDataView {
 
     void renderTracking(Tracking tracking);
 
+    void showTracking();
 }

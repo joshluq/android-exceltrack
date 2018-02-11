@@ -10,7 +10,7 @@ import pe.exceltransport.domain.repository.TrackingRepository;
 
 public class GetTracking extends UseCase<Tracking,GetTracking.Params> {
 
-    private TrackingRepository repository;
+    private final TrackingRepository repository;
 
     @Inject
     public GetTracking(TrackingRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {

@@ -20,7 +20,6 @@ import pe.exceltransport.exceltrack.R;
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ItemHolder> {
 
     private List<Trip> list;
-
     private OnItemClickListener listener;
 
 

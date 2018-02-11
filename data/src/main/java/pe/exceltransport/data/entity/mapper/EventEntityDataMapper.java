@@ -12,7 +12,7 @@ public class EventEntityDataMapper {
         //empty constructor
     }
 
-    static Event transform(EventEntity entity) {
+    private static Event transform(EventEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -21,6 +21,7 @@ public class EventEntityDataMapper {
         event.setCreationDate(entity.getCreationDate());
         event.setDetail(entity.getDetail());
         event.setType(transform(entity.getType()));
+        event.setLocation(LocationEntityDataMapper.transform(entity.getLocation()));
         return event;
     }
 

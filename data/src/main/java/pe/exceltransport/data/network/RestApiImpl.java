@@ -15,6 +15,7 @@ import pe.exceltransport.data.entity.SessionEntity;
 import pe.exceltransport.data.entity.TrackingEntity;
 import pe.exceltransport.data.entity.TripEntity;
 import pe.exceltransport.data.exception.DefaultException;
+import pe.exceltransport.data.network.body.EventBody;
 import pe.exceltransport.data.network.body.SignInBody;
 import pe.exceltransport.data.network.response.BodyResponse;
 import pe.exceltransport.data.network.response.SignInResponse;
@@ -77,6 +78,25 @@ public class RestApiImpl implements RestApi {
         return Observable.create(emitter -> {
             if (isThereNetworkConnection(emitter)) {
                 restService.getTracking(tripId).enqueue(new DefaultCallback<BodyResponse<TrackingResponse>>(emitter) {
+                    @Override
+                    public void onResponse(@NonNull Call<BodyResponse<TrackingResponse>> call, @NonNull Response<BodyResponse<TrackingResponse>> response) {
+                        super.onResponse(call, response);
+                        BodyResponse<TrackingResponse> bodyResponse = response.body();
+                        if (bodyResponse != null && bodyResponse.getBody() != null) {
+                            emitter.onNext(bodyResponse.getBody().getTrackin());
+                            emitter.onComplete();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<TrackingEntity> addEvent(long trackingId, EventBody body) {
+        return Observable.create(emitter -> {
+            if (isThereNetworkConnection(emitter)) {
+                restService.addEvent(trackingId, body).enqueue(new DefaultCallback<BodyResponse<TrackingResponse>>(emitter) {
                     @Override
                     public void onResponse(@NonNull Call<BodyResponse<TrackingResponse>> call, @NonNull Response<BodyResponse<TrackingResponse>> response) {
                         super.onResponse(call, response);

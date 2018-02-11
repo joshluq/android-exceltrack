@@ -38,6 +38,7 @@ public class Tracking {
     public enum Status{
         CREATED,
         INITIATED,
+        STARTING,
         LOAD,
         SHIPMENT,
         UNLOADING,

@@ -17,17 +17,18 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import pe.exceltransport.domain.Event;
+import pe.exceltransport.domain.Location;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.view.util.DateUtil;
 
 public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdapter.TimeLineViewHolder> {
 
     private Context context;
-
     private List<Event> list;
-
     private Event.Type type;
+    private OnItemClickListener listener;
 
     @Inject
     public EventTimeLineAdapter(Context context) {
@@ -65,6 +66,10 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         }
     }
 
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     private List<Event> filterByType(List<Event> list, Event.Type type) {
         List<Event> filteredList = new ArrayList<>();
         for (Event event : list) {
@@ -87,6 +92,8 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         @BindView(R.id.tv_detail)
         TextView tvDetail;
 
+        private Event event;
+
         TimeLineViewHolder(View itemView, int viewType) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -94,14 +101,27 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         }
 
         private void bind(Event event) {
+            this.event = event;
             if (type.equals(Event.Type.INCIDENCE)) {
                 tlMarker.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_inactive));
             } else {
                 tlMarker.setMarker(getLayoutPosition() == getItemCount() - 1 ? ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_disable) : ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_active));
             }
-
             tvDate.setText(DateUtil.milliSecondsToDateFormatted(event.getCreationDate(), DateUtil.DEFAULT_FORMAT));
             tvDetail.setText(event.getDetail());
         }
+
+        @OnClick(R.id.time_marker)
+        public void onTimeMarker(){
+            if (listener != null) {
+                listener.onMarkerClick(event.getLocation());
+            }
+        }
+
+    }
+
+    public interface OnItemClickListener {
+
+        void onMarkerClick(Location location);
     }
 }

@@ -3,10 +3,8 @@ package pe.exceltransport.exceltrack.view.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,9 +15,13 @@ import com.ebanx.swipebtn.SwipeButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,16 +29,18 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import pe.exceltransport.domain.Event;
+import pe.exceltransport.domain.Location;
 import pe.exceltransport.domain.Tracking;
 import pe.exceltransport.domain.Trip;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.TripDetailPresenter;
 import pe.exceltransport.exceltrack.view.TripDetailView;
 import pe.exceltransport.exceltrack.view.adapter.EventTimeLineAdapter;
+import pe.exceltransport.exceltrack.view.util.DateUtil;
 import pe.exceltransport.exceltrack.view.util.Extra;
 
 
-public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener {
+public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener, EventTimeLineAdapter.OnItemClickListener {
 
     @BindView(R.id.map_loading)
     View vMapLoading;
@@ -46,9 +50,6 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
 
     @BindView(R.id.v_bottom_sheet)
     View vBottomSheet;
-
-    @BindView(R.id.fab_events)
-    FloatingActionButton fabEvents;
 
     @BindView(R.id.tv_customer_name)
     TextView tvCustomerName;
@@ -103,17 +104,11 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         tvStart.setText(trip.getStart().getAddress());
         tvFinish.setText(trip.getFinish().getAddress());
         setupRecyclerView();
-        setupSwipeButton();
     }
 
     @OnClick(R.id.ib_location)
     public void onIbLocation() {
-        moveCamera();
-    }
-
-    @OnClick(R.id.fab_events)
-    public void onFabEvents() {
-        bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
+        moveCamera(true);
     }
 
     @Override
@@ -124,6 +119,11 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @Override
     public long getTripId() {
         return trip.getId();
+    }
+
+    @Override
+    public long getTrackingId() {
+        return trip.getTracking().getTrackingId();
     }
 
     @Override
@@ -138,7 +138,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         this.googleMap.getUiSettings().setZoomGesturesEnabled(false);
         this.googleMap.getUiSettings().setRotateGesturesEnabled(false);
         addMarkersToMap();
-        moveCamera();
+        moveCamera(false);
     }
 
     @Override
@@ -163,7 +163,16 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
 
     @Override
     public void renderTracking(Tracking tracking) {
+        trip.setTracking(tracking);
         trackingAdapter.bindList(tracking.getEvents(), Event.Type.TRACKING);
+        addEventsToMap(tracking.getEvents());
+        setupSwipeButton();
+    }
+
+    @Override
+    public void showTracking() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        swipeButton.toggleState();
     }
 
     private void getExtras() {
@@ -174,58 +183,83 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         addMarkerToMap(googleMap,
                 new LatLng(trip.getStart().getLatitude(), trip.getStart().getLongitude()),
                 getString(R.string.text_start),
-                trip.getStart().getAddress());
+                trip.getStart().getAddress(),
+                BitmapDescriptorFactory.fromResource(R.drawable.marker_local_shipping));
 
         addMarkerToMap(googleMap,
                 new LatLng(trip.getFinish().getLatitude(), trip.getFinish().getLongitude()),
                 getString(R.string.text_finish),
-                trip.getFinish().getAddress());
+                trip.getFinish().getAddress(),
+                BitmapDescriptorFactory.fromResource(R.drawable.marker_beenhere));
 
     }
 
-    private void addMarkerToMap(GoogleMap googleMap, LatLng position, String title, String snippet) {
+    private void addEventsToMap(List<Event> events) {
+        for (Event event : events) {
+            if (event.getLocation() != null) {
+                addMarkerToMap(googleMap,
+                        new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()),
+                        DateUtil.milliSecondsToDateFormatted(event.getCreationDate(), DateUtil.DEFAULT_FORMAT),
+                        event.getDetail(),
+                        BitmapDescriptorFactory.fromResource(R.drawable.marker_place));
+            }
+
+        }
+    }
+
+    private void addMarkerToMap(GoogleMap googleMap, LatLng position, String title, String snippet, BitmapDescriptor icon) {
         googleMap.addMarker(new MarkerOptions()
+                .icon(icon)
                 .position(position)
                 .title(title)
                 .snippet(snippet));
     }
 
-    private void moveCamera() {
+    private void moveCamera(boolean animate) {
         LatLngBounds bounds = new LatLngBounds.Builder()
                 .include(new LatLng(trip.getStart().getLatitude(), trip.getStart().getLongitude()))
                 .include(new LatLng(trip.getFinish().getLatitude(), trip.getFinish().getLongitude()))
                 .build();
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
+        if (animate) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
+        } else {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
+        }
     }
 
     private void setupBottomSheetBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(vBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
-                    fabEvents.animate().scaleX(0).scaleY(0).setDuration(300).start();
-                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
-                    fabEvents.animate().scaleX(1).scaleY(1).setDuration(300).start();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                //default implementation
-            }
-        });
     }
 
     private void setupRecyclerView() {
+        trackingAdapter.setListener(this);
         rvTracking.setLayoutManager(new LinearLayoutManager(this));
         rvTracking.setHasFixedSize(true);
         rvTracking.setAdapter(trackingAdapter);
     }
 
-    private void setupSwipeButton(){
+    private void setupSwipeButton() {
+        swipeButton.setVisibility(View.VISIBLE);
         swipeButton.setOnActiveListener(this);
+        swipeButton.setText(getNextTrackName(trip.getTracking().getStatus()));
+    }
+
+    private String getNextTrackName(Tracking.Status status) {
+        switch (status) {
+            case CREATED:
+                return getString(R.string.text_accept);
+            case INITIATED:
+                return getString(R.string.text_go_to_starting);
+            case STARTING:
+                return getString(R.string.text_starting_load);
+            case LOAD:
+                return getString(R.string.text_starting_shipment);
+            case SHIPMENT:
+                return getString(R.string.text_starting_unloading);
+            default:
+                return getString(R.string.text_finished);
+        }
     }
 
     @Override
@@ -239,5 +273,15 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @Override
     public void onClick(DialogInterface dialog, int which) {
         dialog.dismiss();
+        presenter.addTrackingEvent();
+    }
+
+    @Override
+    public void onMarkerClick(Location location) {
+        if (location != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                    location.getLongitude()), 15));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
     }
 }

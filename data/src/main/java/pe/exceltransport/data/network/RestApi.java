@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import pe.exceltransport.data.entity.SessionEntity;
 import pe.exceltransport.data.entity.TrackingEntity;
 import pe.exceltransport.data.entity.TripEntity;
+import pe.exceltransport.data.network.body.EventBody;
 import pe.exceltransport.data.network.body.SignInBody;
 
 public interface RestApi {
@@ -20,6 +21,8 @@ public interface RestApi {
 
     //tracking
     Observable<TrackingEntity> getTracking(long tripId);
+
+    Observable<TrackingEntity> addEvent(long trackingId, EventBody body);
 
 
 }

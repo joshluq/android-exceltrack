@@ -27,10 +27,12 @@ public class TrackingEntityDataMapper {
         }else if(status == 1){
             return Tracking.Status.INITIATED;
         }else if(status == 2){
-            return Tracking.Status.LOAD;
+            return Tracking.Status.STARTING;
         }else if(status == 3){
-            return Tracking.Status.SHIPMENT;
+            return Tracking.Status.LOAD;
         }else if(status == 4){
+            return Tracking.Status.SHIPMENT;
+        }else if(status == 5){
             return Tracking.Status.UNLOADING;
         }else {
             return Tracking.Status.COMPLETED;

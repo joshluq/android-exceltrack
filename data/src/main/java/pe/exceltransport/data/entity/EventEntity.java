@@ -16,6 +16,9 @@ public class EventEntity {
     @SerializedName("type")
     private int type;
 
+    @SerializedName("location")
+    private LocationEntity location;
+
     public long getId() {
         return id;
     }
@@ -32,4 +35,7 @@ public class EventEntity {
         return type;
     }
 
+    public LocationEntity getLocation() {
+        return location;
+    }
 }

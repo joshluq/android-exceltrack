@@ -10,6 +10,8 @@ public class Event {
 
     private Type type;
 
+    private Location location;
+
     public long getId() {
         return id;
     }
@@ -40,6 +42,14 @@ public class Event {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public enum Type {
