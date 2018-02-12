@@ -48,6 +48,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @BindView(R.id.event_loading)
     View vEventLoading;
 
+    @BindView(R.id.button_loading)
+    View vButtonLoading;
+
     @BindView(R.id.v_bottom_sheet)
     View vBottomSheet;
 
@@ -153,18 +156,22 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
 
     @Override
     public void showTrackingLoading() {
+        swipeButton.setVisibility(View.INVISIBLE);
+        vButtonLoading.setVisibility(View.VISIBLE);
         vEventLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideTrackingLoading() {
+        swipeButton.setVisibility(View.VISIBLE);
         vEventLoading.setVisibility(View.GONE);
+        vButtonLoading.setVisibility(View.GONE);
     }
 
     @Override
     public void renderTracking(Tracking tracking) {
         trip.setTracking(tracking);
-        trackingAdapter.bindList(tracking.getEvents(), Event.Type.TRACKING);
+        trackingAdapter.bindList(tracking.getEvents());
         addEventsToMap(tracking.getEvents());
         setupSwipeButton();
     }

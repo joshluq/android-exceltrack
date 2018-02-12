@@ -27,14 +27,14 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
 
     private Context context;
     private List<Event> list;
-    private Event.Type type;
     private OnItemClickListener listener;
+    private int lastTrackingPosition;
 
     @Inject
     public EventTimeLineAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
-        this.type = Event.Type.TRACKING;
+        this.lastTrackingPosition = -1;
     }
 
     @Override
@@ -58,11 +58,11 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         return TimelineView.getTimeLineViewType(position, getItemCount());
     }
 
-    public void bindList(List<Event> list, Event.Type type) {
+    public void bindList(List<Event> list) {
         if (list != null) {
-            this.list = filterByType(list, type);
-            this.type = type;
+            this.list = list;
             notifyDataSetChanged();
+            getLastTrackingPosition(list);
         }
     }
 
@@ -70,18 +70,15 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         this.listener = listener;
     }
 
-    private List<Event> filterByType(List<Event> list, Event.Type type) {
-        List<Event> filteredList = new ArrayList<>();
-        for (Event event : list) {
-            if (event.getType().equals(type)) {
-                filteredList.add(event);
+    private void getLastTrackingPosition(List<Event> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getType().equals(Event.Type.TRACKING)) {
+                lastTrackingPosition = i;
             }
         }
-        return filteredList;
     }
 
-
-    public class TimeLineViewHolder extends RecyclerView.ViewHolder {
+    class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.time_marker)
         TimelineView tlMarker;
@@ -94,25 +91,30 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
 
         private Event event;
 
+        private View rootView;
+
         TimeLineViewHolder(View itemView, int viewType) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             tlMarker.initLine(viewType);
+            rootView = itemView;
         }
 
         private void bind(Event event) {
             this.event = event;
-            if (type.equals(Event.Type.INCIDENCE)) {
+            if (event.getType().equals(Event.Type.INCIDENCE)) {
+                rootView.setPadding(30, 0, 0, 0);
                 tlMarker.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_inactive));
             } else {
-                tlMarker.setMarker(getLayoutPosition() == getItemCount() - 1 ? ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_disable) : ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_active));
+                rootView.setPadding(0, 0, 0, 0);
+                tlMarker.setMarker(getLayoutPosition() == lastTrackingPosition ? ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_disable) : ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_active));
             }
             tvDate.setText(DateUtil.milliSecondsToDateFormatted(event.getCreationDate(), DateUtil.DEFAULT_FORMAT));
             tvDetail.setText(event.getDetail());
         }
 
         @OnClick(R.id.time_marker)
-        public void onTimeMarker(){
+        void onTimeMarker() {
             if (listener != null) {
                 listener.onMarkerClick(event.getLocation());
             }
