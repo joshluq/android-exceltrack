@@ -21,24 +21,4 @@ public class SignInActivityModule {
         return new Navigator(activity);
     }
 
-    @Provides
-    SignIn provideSignIn(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        return new SignIn(repository, threadExecutor, postExecutionThread);
-    }
-
-    @Provides
-    SaveSession provideSaveSession(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        return new SaveSession(repository, threadExecutor, postExecutionThread);
-    }
-
-    @Provides
-    SaveEmail provideSaveEmail(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        return new SaveEmail(repository, threadExecutor, postExecutionThread);
-    }
-
-    @Provides
-    GetEmailSaved provideGetEmailSaved(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        return new GetEmailSaved(repository, threadExecutor, postExecutionThread);
-    }
-
 }

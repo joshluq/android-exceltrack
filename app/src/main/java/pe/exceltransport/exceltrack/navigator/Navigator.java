@@ -13,6 +13,8 @@ import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
 import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
 import pe.exceltransport.exceltrack.view.fragment.MoreFragment;
+import pe.exceltransport.exceltrack.view.fragment.SignInFragment;
+import pe.exceltransport.exceltrack.view.fragment.SplashFragment;
 import pe.exceltransport.exceltrack.view.fragment.TripListFragment;
 
 public class Navigator {
@@ -40,6 +42,19 @@ public class Navigator {
     }
 
     //navigate to fragments
+    public void navigateToSplashFragment() {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, SplashFragment.newInstance(), SplashFragment.class.getSimpleName());
+        fragmentTransaction(transaction);
+    }
+
+    public void navigateToSignInFragment() {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, SignInFragment.newInstance(), SignInFragment.class.getSimpleName());
+        fragmentTransaction(transaction);
+    }
+
+
     public void navigateToTripListFragment() {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, TripListFragment.newInstance(), TripListFragment.class.getSimpleName());

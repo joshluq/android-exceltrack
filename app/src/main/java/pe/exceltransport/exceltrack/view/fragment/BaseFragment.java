@@ -11,4 +11,8 @@ public class BaseFragment extends Fragment {
         ButterKnife.bind(fragment, view);
     }
 
+    protected void initUI(){
+
+    }
+
 }

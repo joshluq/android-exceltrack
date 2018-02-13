@@ -64,14 +64,19 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
         super.onActivityCreated(savedInstanceState);
         activity = (MainActivity) getActivity();
         presenter.setView(this);
-        setupRecyclerView();
-        presenter.getPendingTrips();
+        initUI();
     }
 
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
+    }
+
+    @Override
+    protected void initUI() {
+        setupRecyclerView();
+        presenter.getPendingTrips();
     }
 
     @Override
