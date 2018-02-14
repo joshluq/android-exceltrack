@@ -7,13 +7,13 @@ import pe.exceltransport.domain.executor.ThreadExecutor;
 import pe.exceltransport.domain.interactor.GetSessionSaved;
 import pe.exceltransport.domain.repository.UserRepository;
 import pe.exceltransport.exceltrack.navigator.Navigator;
-import pe.exceltransport.exceltrack.view.activity.SplashActivity;
+import pe.exceltransport.exceltrack.view.activity.SignInActivity;
 
 @Module
-public class SplashActivityModule {
+public class SplashFragmentModule {
 
     @Provides
-    Navigator provideNavigator(SplashActivity activity) {
+    Navigator provideNavigator(SignInActivity activity) {
         return new Navigator(activity);
     }
 

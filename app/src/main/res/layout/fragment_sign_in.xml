@@ -74,13 +74,4 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-    <include
-        android:id="@+id/v_loading"
-        layout="@layout/include_loading"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </android.support.constraint.ConstraintLayout>
