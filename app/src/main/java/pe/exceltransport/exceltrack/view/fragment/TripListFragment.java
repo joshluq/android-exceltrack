@@ -75,6 +75,7 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
 
     @Override
     protected void initUI() {
+        setupToolbar();
         setupRecyclerView();
         presenter.getPendingTrips();
     }
@@ -102,6 +103,10 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
     @Override
     public void showError(String message) {
         activity.getNavigator().showAlertDialog(getString(R.string.text_error),message,getString(R.string.text_got_it));
+    }
+
+    private void setupToolbar(){
+        activity.setToolbarTitle("Mis viajes asignados");
     }
 
     private void setupRecyclerView() {

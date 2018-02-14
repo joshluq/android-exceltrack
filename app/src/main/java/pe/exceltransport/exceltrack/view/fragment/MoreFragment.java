@@ -51,12 +51,18 @@ public class MoreFragment extends BaseFragment implements MoreView {
         super.onActivityCreated(savedInstanceState);
         activity = (MainActivity) getActivity();
         presenter.setView(this);
+        initUI();
     }
 
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
+    }
+
+    @Override
+    protected void initUI() {
+        setupToolbar();
     }
 
     @OnClick(R.id.v_sign_out)
@@ -67,5 +73,9 @@ public class MoreFragment extends BaseFragment implements MoreView {
     @Override
     public void goToSignIn() {
         activity.getNavigator().navigateToSignInActivity();
+    }
+
+    private void setupToolbar(){
+        activity.setToolbarTitle("Más opciones");
     }
 }

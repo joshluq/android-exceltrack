@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     protected void initUI() {
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         bottomNavigation.setSelectedItemId(R.id.action_trip_list);
-
     }
 
     @Override
