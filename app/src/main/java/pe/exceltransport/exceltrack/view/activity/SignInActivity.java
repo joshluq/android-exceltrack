@@ -27,6 +27,7 @@ public class SignInActivity extends BaseActivity implements HasSupportFragmentIn
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        injectView(this);
         initUI();
     }
 
