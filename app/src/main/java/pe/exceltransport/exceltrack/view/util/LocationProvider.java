@@ -1,149 +1,104 @@
-package pe.com.interbank.mpay.view.util;
+package pe.exceltransport.exceltrack.view.util;
 
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Looper;
 
-import android.support.v4.content.ContextCompat;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 
 import javax.inject.Inject;
 
-public class LocationProvider implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener {
+public class LocationProvider {
 
-    private static final int INTERVAL_IN_MS = 10 * 1000;
+    private static final long UPDATE_INTERVAL = 60000;  /* 60 secs */
+    private static final long FASTEST_INTERVAL = 5000; /* 5 secs */
 
-    private static final int FASTEST_INTERVAL_IN_MS = 1000;
+    private final Context context;
+    private final LocationRequest locationRequest;
 
-    private final GoogleApiAvailability mGoogleApiAvailability;
-
-    private final GoogleApiClient mGoogleApiClient;
-
-    private final FusedLocationProviderApi mFusedLocationProviderApi;
-
-    private final Context mContext;
-
-    private final LocationRequest mLocationRequest;
-
-    private LocationCallback mLocationCallback;
+    private LocationListener listener;
 
     private Location currentLocation;
 
-    private boolean mUsingGms = false;
-
     @Inject
-    public LocationProvider(Context context) {
-        this.mGoogleApiAvailability = GoogleApiAvailability.getInstance();
-        this.mGoogleApiClient = new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
-        this.mFusedLocationProviderApi = LocationServices.FusedLocationApi;
-
-        this.mContext = context;
-        mLocationRequest =
-                LocationRequest.create()
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .setInterval(INTERVAL_IN_MS)
-                        .setFastestInterval(FASTEST_INTERVAL_IN_MS);
-
-        determineIfUsingGms();
-        if (isUsingGms()) {
-            mGoogleApiClient.registerConnectionCallbacks(this);
-            mGoogleApiClient.registerConnectionFailedListener(this);
-        }
-    }
-
-    private void determineIfUsingGms() {
-        int statusCode = mGoogleApiAvailability.isGooglePlayServicesAvailable(mContext);
-        if (statusCode == ConnectionResult.SUCCESS || statusCode == ConnectionResult.SERVICE_UPDATING) {
-            mUsingGms = true;
-        }
-    }
-
-    private boolean isUsingGms() {
-        return mUsingGms;
-    }
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        int permissionGranted = ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionGranted == PackageManager.PERMISSION_GRANTED) {
-            LocationAvailability locationAvailability = mFusedLocationProviderApi.getLocationAvailability(mGoogleApiClient);
-            if (!locationAvailability.isLocationAvailable()) {
-                mLocationCallback.handleLocationNotAvailable();
-                return;
-            }
-            Location lastKnownLocation = mFusedLocationProviderApi.getLastLocation(mGoogleApiClient);
-            mFusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            if (lastKnownLocation != null && lastKnownLocation.hasAccuracy() && lastKnownLocation.getAccuracy()<100) {
-                currentLocation = lastKnownLocation;
-                if(currentLocation.getLatitude() != 0 && currentLocation.getLongitude() != 0){
-                    mLocationCallback.handleNewLocation(currentLocation);
-                }else{
-                    mLocationCallback.handleLocationNotAvailable();
-                }
-            }
-        }else{
-            mLocationCallback.handleLocationNotAvailable();
-        }
+    LocationProvider(Context context) {
+        this.context = context;
+        this.locationRequest = new LocationRequest();
 
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-
+    @SuppressLint("MissingPermission")
+    public void connect() {
+        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(context);
+        locationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location == null) return;
+                    onLocationChanged(location);
+                })
+                .addOnFailureListener(e -> {
+                    if (listener != null) listener.onLocationNotAvailable();
+                });
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    @SuppressLint("MissingPermission")
+    public void startLocationUpdates() {
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setInterval(UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_INTERVAL);
 
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(locationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        SettingsClient settingsClient = LocationServices.getSettingsClient(context);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+        getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest,
+                new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                }, Looper.myLooper());
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
+
+    private void onLocationChanged(Location location) {
+        // GPS may be turned off
         if (location == null) {
+            if (listener != null) listener.onLocationNotAvailable();
             return;
         }
-        if(LocationUtil.isBetterLocation(location,currentLocation)){
-            mLocationCallback.handleNewLocation(location);
+        // Report to the UI that the location was updated
+        if (listener != null) {
+            this.currentLocation = location;
+            listener.onNewLocation(location);
         }
     }
 
-    public void connect(LocationCallback callback) {
-        this.mLocationCallback = callback;
-        if (isUsingGms()) {
-            if (mGoogleApiClient.isConnected()) {
-                onConnected(new Bundle());
-            } else {
-                mGoogleApiClient.connect();
-            }
-        }
+    public void setListener(LocationListener listener) {
+        this.listener = listener;
     }
 
-    public void disconnect() {
-        if (isUsingGms() && mGoogleApiClient.isConnected()) {
-            mFusedLocationProviderApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
-        }
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
+    public interface LocationListener {
 
-    public interface LocationCallback {
+        void onNewLocation(Location location);
 
-        void handleNewLocation(Location location);
+        void onLocationNotAvailable();
 
-        void handleLocationNotAvailable();
     }
 }

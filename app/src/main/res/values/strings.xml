@@ -29,5 +29,7 @@
     <string name="text_starting_shipment">Iniciar Traslado</string>
     <string name="text_starting_unloading">Iniciar Descarga</string>
     <string name="text_finished">Finalizar</string>
+    <string name="location_rationale">Para una mejor experiencia la aplicacion necesita este permiso</string>
+    <string name="rationale_ask_ok">Gracias</string>
 
 </resources>

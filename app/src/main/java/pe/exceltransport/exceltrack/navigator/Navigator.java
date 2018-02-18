@@ -1,6 +1,7 @@
 package pe.exceltransport.exceltrack.navigator;
 
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 
@@ -12,6 +13,7 @@ import pe.exceltransport.exceltrack.view.activity.BaseActivity;
 import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
 import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
+import pe.exceltransport.exceltrack.view.dialog.AddEventDialog;
 import pe.exceltransport.exceltrack.view.fragment.MoreFragment;
 import pe.exceltransport.exceltrack.view.fragment.SignInFragment;
 import pe.exceltransport.exceltrack.view.fragment.SplashFragment;
@@ -88,7 +90,10 @@ public class Navigator {
         builder.create().show();
     }
 
-
+    public void showAddEventDialog(){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        AddEventDialog.newInstance().show(fragmentManager, AddEventDialog.class.getSimpleName());
+    }
 
     private void fragmentTransaction(FragmentTransaction transaction) {
         if (activity.isStopped()) transaction.commitAllowingStateLoss();

@@ -9,6 +9,7 @@ import pe.exceltransport.domain.interactor.GetTracking;
 import pe.exceltransport.domain.repository.TrackingRepository;
 import pe.exceltransport.exceltrack.navigator.Navigator;
 import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
+import pe.exceltransport.exceltrack.view.util.LocationProvider;
 
 @Module
 public class TripDetailActivityModule {

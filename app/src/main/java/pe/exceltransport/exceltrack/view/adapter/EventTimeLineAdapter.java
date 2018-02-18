@@ -89,8 +89,6 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         @BindView(R.id.tv_detail)
         TextView tvDetail;
 
-        private Event event;
-
         private View rootView;
 
         TimeLineViewHolder(View itemView, int viewType) {
@@ -101,7 +99,6 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
         }
 
         private void bind(Event event) {
-            this.event = event;
             if (event.getType().equals(Event.Type.INCIDENCE)) {
                 rootView.setPadding(30, 0, 0, 0);
                 tlMarker.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_timeline_marker_inactive));
@@ -111,13 +108,12 @@ public class EventTimeLineAdapter extends RecyclerView.Adapter<EventTimeLineAdap
             }
             tvDate.setText(DateUtil.milliSecondsToDateFormatted(event.getCreationDate(), DateUtil.DEFAULT_FORMAT));
             tvDetail.setText(event.getDetail());
-        }
 
-        @OnClick(R.id.time_marker)
-        void onTimeMarker() {
-            if (listener != null) {
-                listener.onMarkerClick(event.getLocation());
-            }
+            rootView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onMarkerClick(event.getLocation());
+                }
+            });
         }
 
     }
