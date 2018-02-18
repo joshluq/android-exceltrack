@@ -104,24 +104,31 @@ public class TripDetailPresenter implements Presenter<TripDetailView>, LocationP
     }
 
     public void addTrackingEvent() {
-        Event event = new Event();
-        event.setType(Event.Type.TRACKING);
-        addEvent.execute(new AddEventObserver(), AddEvent.Params.buildParams(view.getTrackingId(), event));
+        if (isValidLocation()) {
+            Event event = new Event();
+            event.setType(Event.Type.TRACKING);
+            event.setLocation(view.getCurrentLocation());
+            addEvent.execute(new AddEventObserver(), AddEvent.Params.buildParams(view.getTrackingId(), event));
+        }
     }
 
-    public Location getCurrentLocation(){
+    private boolean isValidLocation() {
+        return getCurrentLocation() != null;
+    }
+
+    public Location getCurrentLocation() {
         return locationProvider.getCurrentLocation();
     }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onNewLocation(Location location) {
-        googleMap.setMyLocationEnabled(true);
+        //default implementation
     }
 
     @Override
     public void onLocationNotAvailable() {
-        //
+        //default implementation
     }
 
     private final class GlobalLayoutObserver implements ViewTreeObserver.OnGlobalLayoutListener {

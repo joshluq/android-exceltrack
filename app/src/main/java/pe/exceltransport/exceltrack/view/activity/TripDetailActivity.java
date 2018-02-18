@@ -151,6 +151,14 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     }
 
     @Override
+    public Location getCurrentLocation() {
+        Location currentLocation = new Location();
+        currentLocation.setLatitude(presenter.getCurrentLocation().getLatitude());
+        currentLocation.setLongitude(presenter.getCurrentLocation().getLongitude());
+        return currentLocation;
+    }
+
+    @Override
     public SupportMapFragment getSupportMapFragment() {
         return (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     }
