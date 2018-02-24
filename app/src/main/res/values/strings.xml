@@ -31,5 +31,6 @@
     <string name="text_finished">Finalizar</string>
     <string name="location_rationale">Para una mejor experiencia la aplicacion necesita este permiso</string>
     <string name="rationale_ask_ok">Gracias</string>
+    <string name="text_invalid_field">Campo no valido</string>
 
 </resources>

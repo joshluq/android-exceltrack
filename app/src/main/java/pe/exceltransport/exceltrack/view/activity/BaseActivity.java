@@ -1,8 +1,7 @@
 package pe.exceltransport.exceltrack.view.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import javax.inject.Inject;
 
@@ -21,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.navigator.Navigator;
+import pe.exceltransport.exceltrack.view.util.KeyboardUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -36,6 +34,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     Navigator navigator;
+
+    private long lastClickTime = 0;
+
 
     @Override
     protected void onResume() {
@@ -87,6 +88,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         return navigator;
     }
 
+    public void hideKeyboard(){
+        KeyboardUtil.hideKeyboard(this);
+    }
+
+    public boolean isActionEnable() {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 500){
+            return false;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
+        return true;
+    }
+
     public boolean isGooglePlayServicesAvailable() {
         int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         return ConnectionResult.SUCCESS == resultCode;
@@ -109,6 +122,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             default:
                 return false;
         }
-
     }
 }

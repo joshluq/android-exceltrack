@@ -211,6 +211,54 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         swipeButton.toggleState();
     }
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        presenter.addTrackingEvent();
+    }
+
+    @Override
+    public void onMarkerClick(Location location) {
+        if (location != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                    location.getLongitude()), 15));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+
+    @Override
+    public void onActive() {
+        navigator.showAlertDialog("Mensaje",
+                "¿Esta seguro de cambiar el estado?",
+                "Si, Estoy Seguro",
+                this);
+    }
+
+    @AfterPermissionGranted(PermissionUtil.LOCATION)
+    private void requiresPermission() {
+        String[] perms = {PermissionUtil.Permission.LOCATION.getPerm()};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            turnGPSOn();
+            initUI();
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                    new PermissionRequest.Builder(this, PermissionUtil.Permission.LOCATION.getCode(), perms)
+                            .setRationale(R.string.location_rationale)
+                            .setPositiveButtonText(R.string.rationale_ask_ok)
+                            .build());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+            super.onBackPressed();
+        }
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
     private void getExtras() {
         trip = Trip.class.cast(getIntent().getSerializableExtra(Extra.TRIP.getValue()));
     }
@@ -313,47 +361,8 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         }
     }
 
-    @Override
-    public void onActive() {
-        navigator.showAlertDialog("Mensaje",
-                "¿Esta seguro de cambiar el estado?",
-                "Si, Estoy Seguro",
-                this);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-        presenter.addTrackingEvent();
-    }
-
-    @Override
-    public void onMarkerClick(Location location) {
-        if (location != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                    location.getLongitude()), 15));
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
-    }
-
-    @AfterPermissionGranted(PermissionUtil.LOCATION)
-    private void requiresPermission() {
-        String[] perms = {PermissionUtil.Permission.LOCATION.getPerm()};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            turnGPSOn();
-            initUI();
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(
-                    new PermissionRequest.Builder(this, PermissionUtil.Permission.LOCATION.getCode(), perms)
-                            .setRationale(R.string.location_rationale)
-                            .setPositiveButtonText(R.string.rationale_ask_ok)
-                            .build());
-        }
-    }
-
     private void turnGPSOn() {
-        if (!isGpsEnabled()) { //if gps is disabled
+        if (!isGpsEnabled()) {
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
