@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import pe.exceltransport.exceltrack.internal.bus.RxBus;
 import pe.exceltransport.exceltrack.internal.di.component.DaggerApplicationComponent;
 
 
@@ -15,6 +16,9 @@ public class AndroidApplication extends Application implements HasActivityInject
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+
+    @Inject
+    RxBus rxBus;
 
     @Override
     public void onCreate() {
@@ -29,5 +33,9 @@ public class AndroidApplication extends Application implements HasActivityInject
     @Override
     public AndroidInjector<Activity> activityInjector() {
         return activityDispatchingAndroidInjector;
+    }
+
+    public RxBus getBus() {
+        return rxBus;
     }
 }

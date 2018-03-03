@@ -14,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Consumer;
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.domain.Event;
 import pe.exceltransport.domain.Tracking;
@@ -21,6 +22,8 @@ import pe.exceltransport.domain.interactor.AddEvent;
 import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.domain.interactor.GetTracking;
 import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
+import pe.exceltransport.exceltrack.internal.bus.EventBus;
+import pe.exceltransport.exceltrack.internal.bus.RxBus;
 import pe.exceltransport.exceltrack.view.TripDetailView;
 import pe.exceltransport.exceltrack.view.util.LocationProvider;
 
@@ -38,14 +41,16 @@ public class TripDetailPresenter implements Presenter<TripDetailView>, LocationP
     private final LocationProvider locationProvider;
     private final GetTracking getTracking;
     private final AddEvent addEvent;
+    private final RxBus rxBus;
     private final Context context;
 
     @Inject
-    public TripDetailPresenter(Context context, GetTracking getTracking, AddEvent addEvent, LocationProvider locationProvider) {
+    public TripDetailPresenter(Context context, GetTracking getTracking, AddEvent addEvent, LocationProvider locationProvider, RxBus rxBus) {
         this.context = context;
         this.getTracking = getTracking;
         this.addEvent = addEvent;
         this.locationProvider = locationProvider;
+        this.rxBus = rxBus;
         this.isViewReady = false;
         this.isMapReady = false;
         this.googleMap = null;
@@ -91,6 +96,13 @@ public class TripDetailPresenter implements Presenter<TripDetailView>, LocationP
         supportMapFragment.getMapAsync(new MapReadyObserver());
     }
 
+    public void eventListener(){
+        rxBus.toObservable().subscribe(object -> {
+            if (object instanceof EventBus.UpdateTrackinEvent) {
+
+            }
+        });
+    }
 
     private void fireCallbackIfReady() {
         if (isViewReady && isMapReady) {

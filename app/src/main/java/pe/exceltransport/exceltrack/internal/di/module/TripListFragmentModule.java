@@ -8,6 +8,8 @@ import pe.exceltransport.domain.interactor.GetSessionSaved;
 import pe.exceltransport.domain.interactor.GetTrips;
 import pe.exceltransport.domain.repository.TripRepository;
 import pe.exceltransport.domain.repository.UserRepository;
+import pe.exceltransport.exceltrack.AndroidApplication;
+import pe.exceltransport.exceltrack.internal.bus.RxBus;
 
 @Module
 public class TripListFragmentModule {
@@ -22,4 +24,5 @@ public class TripListFragmentModule {
     GetSessionSaved provideGetSessionSaved(UserRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread){
         return new GetSessionSaved(repository,threadExecutor,postExecutionThread);
     }
+
 }

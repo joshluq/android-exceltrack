@@ -14,6 +14,7 @@ import pe.exceltransport.domain.executor.PostExecutionThread;
 import pe.exceltransport.domain.executor.ThreadExecutor;
 import pe.exceltransport.exceltrack.AndroidApplication;
 import pe.exceltransport.exceltrack.UIThread;
+import pe.exceltransport.exceltrack.internal.bus.RxBus;
 
 @Module
 public class ApplicationModule {

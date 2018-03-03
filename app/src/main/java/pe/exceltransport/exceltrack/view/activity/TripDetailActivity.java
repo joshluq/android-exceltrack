@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,6 +32,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import pe.exceltransport.domain.Event;
 import pe.exceltransport.domain.Location;
 import pe.exceltransport.domain.Tracking;
@@ -47,7 +51,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
 
-public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener, EventTimeLineAdapter.OnItemClickListener {
+public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener, EventTimeLineAdapter.OnItemClickListener, HasSupportFragmentInjector {
 
     @BindView(R.id.map_loading)
     View vMapLoading;
@@ -78,6 +82,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
 
     @BindView(R.id.fab_events)
     FloatingActionButton fabEvents;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Inject
     TripDetailPresenter presenter;
@@ -111,6 +118,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @Override
     protected void initUI() {
         presenter.mapListeners();
+        presenter.eventListener();
         presenter.getTracking();
         setupBottomSheetBehavior();
         tvCustomerName.setText(trip.getCustomer().getCompany().getTradeName());
@@ -257,6 +265,11 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
             super.onBackPressed();
         }
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 
     private void getExtras() {

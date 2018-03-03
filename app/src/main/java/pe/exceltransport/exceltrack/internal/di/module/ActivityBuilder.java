@@ -16,7 +16,7 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = {MainActivityModule.class, MainFragmentProvider.class})
     abstract MainActivity bindMainActivity();
 
-    @ContributesAndroidInjector(modules = TripDetailActivityModule.class)
+    @ContributesAndroidInjector(modules = {TripDetailActivityModule.class, TripDetailFragmentProvider.class})
     abstract TripDetailActivity bindTripDetailActivity();
 
 }
