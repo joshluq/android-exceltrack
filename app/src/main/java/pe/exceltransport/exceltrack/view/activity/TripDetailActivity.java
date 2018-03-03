@@ -3,8 +3,11 @@ package pe.exceltransport.exceltrack.view.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -38,6 +41,10 @@ import pe.exceltransport.exceltrack.view.TripDetailView;
 import pe.exceltransport.exceltrack.view.adapter.EventTimeLineAdapter;
 import pe.exceltransport.exceltrack.view.util.DateUtil;
 import pe.exceltransport.exceltrack.view.util.Extra;
+import pe.exceltransport.exceltrack.view.util.PermissionUtil;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
 
 
 public class TripDetailActivity extends BaseActivity implements TripDetailView, OnActiveListener, DialogInterface.OnClickListener, EventTimeLineAdapter.OnItemClickListener {
@@ -69,6 +76,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @BindView(R.id.swipe_button)
     SwipeButton swipeButton;
 
+    @BindView(R.id.fab_events)
+    FloatingActionButton fabEvents;
+
     @Inject
     TripDetailPresenter presenter;
 
@@ -95,7 +105,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         injectView(this);
         presenter.setView(this);
         getExtras();
-        initUI();
+        requiresPermission();
     }
 
     @Override
@@ -114,6 +124,17 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         moveCamera(true);
     }
 
+    @OnClick(R.id.fab_events)
+    public void onFabEvents() {
+        navigator.showAddEventDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.resume();
+    }
+
     @Override
     public void showError(String message) {
         //default implementation
@@ -127,6 +148,14 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     @Override
     public long getTrackingId() {
         return trip.getTracking().getTrackingId();
+    }
+
+    @Override
+    public Location getCurrentLocation() {
+        Location currentLocation = new Location();
+        currentLocation.setLatitude(presenter.getCurrentLocation().getLatitude());
+        currentLocation.setLongitude(presenter.getCurrentLocation().getLongitude());
+        return currentLocation;
     }
 
     @Override
@@ -180,6 +209,54 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     public void showTracking() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         swipeButton.toggleState();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        presenter.addTrackingEvent();
+    }
+
+    @Override
+    public void onMarkerClick(Location location) {
+        if (location != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                    location.getLongitude()), 15));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+
+    @Override
+    public void onActive() {
+        navigator.showAlertDialog("Mensaje",
+                "¿Esta seguro de cambiar el estado?",
+                "Si, Estoy Seguro",
+                this);
+    }
+
+    @AfterPermissionGranted(PermissionUtil.LOCATION)
+    private void requiresPermission() {
+        String[] perms = {PermissionUtil.Permission.LOCATION.getPerm()};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            turnGPSOn();
+            initUI();
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                    new PermissionRequest.Builder(this, PermissionUtil.Permission.LOCATION.getCode(), perms)
+                            .setRationale(R.string.location_rationale)
+                            .setPositiveButtonText(R.string.rationale_ask_ok)
+                            .build());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+            super.onBackPressed();
+        }
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     private void getExtras() {
@@ -237,6 +314,21 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
     private void setupBottomSheetBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(vBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
+                    fabEvents.animate().scaleX(1).scaleY(1).setDuration(300).start();
+                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
+                    fabEvents.animate().scaleX(0).scaleY(0).setDuration(300).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                //default implementation
+            }
+        });
     }
 
     private void setupRecyclerView() {
@@ -269,26 +361,9 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
         }
     }
 
-    @Override
-    public void onActive() {
-        navigator.showAlertDialog("Mensaje",
-                "¿Esta seguro de cambiar el estado?",
-                "Si, Estoy Seguro",
-                this);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-        presenter.addTrackingEvent();
-    }
-
-    @Override
-    public void onMarkerClick(Location location) {
-        if (location != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                    location.getLongitude()), 15));
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    private void turnGPSOn() {
+        if (!isGpsEnabled()) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
 }

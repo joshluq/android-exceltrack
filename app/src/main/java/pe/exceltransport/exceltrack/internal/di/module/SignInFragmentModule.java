@@ -1,5 +1,7 @@
 package pe.exceltransport.exceltrack.internal.di.module;
 
+import com.mobsandgeeks.saripaar.Validator;
+
 import dagger.Module;
 import dagger.Provides;
 import pe.exceltransport.domain.executor.PostExecutionThread;
@@ -11,6 +13,7 @@ import pe.exceltransport.domain.interactor.SignIn;
 import pe.exceltransport.domain.repository.UserRepository;
 import pe.exceltransport.exceltrack.navigator.Navigator;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
+import pe.exceltransport.exceltrack.view.fragment.SignInFragment;
 
 @Module
 public class SignInFragmentModule {
@@ -18,6 +21,11 @@ public class SignInFragmentModule {
     @Provides
     Navigator provideNavigator(SignInActivity activity) {
         return new Navigator(activity);
+    }
+
+    @Provides
+    Validator provideValidator(SignInFragment fragment) {
+        return new Validator(fragment);
     }
 
     @Provides

@@ -1,7 +1,9 @@
 package pe.exceltransport.exceltrack.presenter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -20,8 +22,9 @@ import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.domain.interactor.GetTracking;
 import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
 import pe.exceltransport.exceltrack.view.TripDetailView;
+import pe.exceltransport.exceltrack.view.util.LocationProvider;
 
-public class TripDetailPresenter implements Presenter<TripDetailView> {
+public class TripDetailPresenter implements Presenter<TripDetailView>, LocationProvider.LocationListener {
 
     private TripDetailView view;
 
@@ -32,15 +35,17 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
     private boolean isMapReady;
     private GoogleMap googleMap;
 
+    private final LocationProvider locationProvider;
     private final GetTracking getTracking;
     private final AddEvent addEvent;
     private final Context context;
 
     @Inject
-    public TripDetailPresenter(Context context, GetTracking getTracking, AddEvent addEvent) {
+    public TripDetailPresenter(Context context, GetTracking getTracking, AddEvent addEvent, LocationProvider locationProvider) {
         this.context = context;
         this.getTracking = getTracking;
         this.addEvent = addEvent;
+        this.locationProvider = locationProvider;
         this.isViewReady = false;
         this.isMapReady = false;
         this.googleMap = null;
@@ -55,7 +60,7 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
 
     @Override
     public void resume() {
-        //default implementation
+        locationProvider.startLocationUpdates();
     }
 
     @Override
@@ -75,6 +80,9 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
 
     public void mapListeners() {
         view.showMapLoading();
+        locationProvider.setListener(this);
+        locationProvider.connect();
+        locationProvider.startLocationUpdates();
         if ((mapView.getWidth() != 0) && (mapView.getHeight() != 0)) {
             isViewReady = true;
         } else {
@@ -96,9 +104,31 @@ public class TripDetailPresenter implements Presenter<TripDetailView> {
     }
 
     public void addTrackingEvent() {
-        Event event = new Event();
-        event.setType(Event.Type.TRACKING);
-        addEvent.execute(new AddEventObserver(), AddEvent.Params.buildParams(view.getTrackingId(), event));
+        if (isValidLocation()) {
+            Event event = new Event();
+            event.setType(Event.Type.TRACKING);
+            event.setLocation(view.getCurrentLocation());
+            addEvent.execute(new AddEventObserver(), AddEvent.Params.buildParams(view.getTrackingId(), event));
+        }
+    }
+
+    private boolean isValidLocation() {
+        return getCurrentLocation() != null;
+    }
+
+    public Location getCurrentLocation() {
+        return locationProvider.getCurrentLocation();
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onNewLocation(Location location) {
+        //default implementation
+    }
+
+    @Override
+    public void onLocationNotAvailable() {
+        //default implementation
     }
 
     private final class GlobalLayoutObserver implements ViewTreeObserver.OnGlobalLayoutListener {

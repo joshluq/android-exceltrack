@@ -9,22 +9,34 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import dagger.android.support.AndroidSupportInjection;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.SignInPresenter;
 import pe.exceltransport.exceltrack.view.SignInView;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
+import pe.exceltransport.exceltrack.view.util.TextInputLayoutAdapter;
 
-public class SignInFragment extends BaseFragment implements SignInView{
+public class SignInFragment extends BaseFragment implements SignInView, Validator.ValidationListener, Validator.ViewValidatedAction {
 
+    @Email(messageResId = R.string.text_invalid_field)
     @BindView(R.id.til_email)
     TextInputLayout tilEmail;
 
+    @Password(scheme = Password.Scheme.ALPHA_NUMERIC, messageResId = R.string.text_invalid_field)
     @BindView(R.id.til_password)
     TextInputLayout tilPassword;
 
@@ -34,9 +46,12 @@ public class SignInFragment extends BaseFragment implements SignInView{
     @Inject
     SignInPresenter presenter;
 
+    @Inject
+    Validator validator;
+
     private SignInActivity activity;
 
-    public static SignInFragment newInstance(){
+    public static SignInFragment newInstance() {
         return new SignInFragment();
     }
 
@@ -53,7 +68,7 @@ public class SignInFragment extends BaseFragment implements SignInView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        injectView(this,view);
+        injectView(this, view);
     }
 
     @Override
@@ -61,6 +76,7 @@ public class SignInFragment extends BaseFragment implements SignInView{
         super.onActivityCreated(savedInstanceState);
         activity = (SignInActivity) getActivity();
         presenter.setView(this);
+        setupValidator();
         initUI();
     }
 
@@ -92,7 +108,7 @@ public class SignInFragment extends BaseFragment implements SignInView{
 
     @Override
     public void setEmail(String email) {
-        if(tilEmail.getEditText() != null) tilEmail.getEditText().setText(email);
+        if (tilEmail.getEditText() != null) tilEmail.getEditText().setText(email);
         cbRemember.setChecked(!email.isEmpty());
     }
 
@@ -103,8 +119,18 @@ public class SignInFragment extends BaseFragment implements SignInView{
 
 
     @OnClick(R.id.btn_sign_in)
-    public void onBtnSignIn(){
-        presenter.signIn();
+    public void onBtnSignIn() {
+        activity.hideKeyboard();
+        validator.validate();
+    }
+
+    @OnEditorAction(R.id.et_password)
+    protected boolean onEtPasswordActionDone(int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            onBtnSignIn();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -119,6 +145,40 @@ public class SignInFragment extends BaseFragment implements SignInView{
 
     @Override
     public void showError(String message) {
-        activity.getNavigator().showAlertDialog(getString(R.string.text_error),message,getString(R.string.text_got_it));
+        activity.getNavigator().showAlertDialog(getString(R.string.text_error), message, getString(R.string.text_got_it));
     }
+
+    @Override
+    public void onValidationSucceeded() {
+        presenter.signIn();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        errors.get(0).getView().requestFocus();
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(activity);
+            if (view instanceof TextInputLayout) {
+                ((TextInputLayout) view).setError(message);
+                ((TextInputLayout) view).setErrorEnabled(true);
+            }
+        }
+    }
+
+    @Override
+    public void onAllRulesPassed(View view) {
+        if (view instanceof TextInputLayout) {
+            ((TextInputLayout) view).setError("");
+            ((TextInputLayout) view).setErrorEnabled(false);
+        }
+    }
+
+    private void setupValidator() {
+        validator.setValidationListener(this);
+        validator.registerAdapter(TextInputLayout.class, new TextInputLayoutAdapter());
+        validator.setViewValidatedAction(this);
+
+    }
+
 }

@@ -15,6 +15,10 @@ import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.SplashPresenter;
 import pe.exceltransport.exceltrack.view.SplashView;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
+import pe.exceltransport.exceltrack.view.util.PermissionUtil;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
 
 public class SplashFragment extends BaseFragment implements SplashView{
 
@@ -48,7 +52,10 @@ public class SplashFragment extends BaseFragment implements SplashView{
         super.onActivityCreated(savedInstanceState);
         activity = (SignInActivity) getActivity();
         presenter.setView(this);
-        initUI();
+        if(activity.isGooglePlayServicesAvailable()){
+            requiresPermission();
+        }
+
     }
 
     @Override
@@ -86,4 +93,26 @@ public class SplashFragment extends BaseFragment implements SplashView{
     public void showError(String message) {
         //default implementation
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(PermissionUtil.LOCATION)
+    private void requiresPermission() {
+        String[] perms = {PermissionUtil.Permission.LOCATION.getPerm()};
+        if (EasyPermissions.hasPermissions(activity, perms)) {
+            initUI();
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                    new PermissionRequest.Builder(this, PermissionUtil.Permission.LOCATION.getCode(), perms)
+                            .setRationale(R.string.location_rationale)
+                            .setPositiveButtonText(R.string.rationale_ask_ok)
+                            .build());
+        }
+    }
+
 }

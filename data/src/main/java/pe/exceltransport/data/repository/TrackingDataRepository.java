@@ -29,6 +29,8 @@ public class TrackingDataRepository implements TrackingRepository{
         EventBody body = new EventBody();
         body.setType(event.getType().ordinal());
         body.setDetail(event.getDetail());
+        body.setLatitude(event.getLocation().getLatitude());
+        body.setLongitude(event.getLocation().getLongitude());
         return restApi.addEvent(trackingId, body).map(TrackingEntityDataMapper::transform);
     }
 
