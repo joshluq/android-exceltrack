@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +26,13 @@ import pe.exceltransport.exceltrack.view.TripListView;
 import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.adapter.TripAdapter;
 
-public class TripListFragment extends BaseFragment implements TripListView, TripAdapter.OnItemClickListener {
+public class TripListFragment extends BaseFragment implements TripListView, SwipeRefreshLayout.OnRefreshListener, TripAdapter.OnItemClickListener {
 
     @BindView(R.id.rv_trips)
     ShimmerRecyclerView rvTrips;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject
     TripListPresenter presenter;
@@ -98,21 +102,24 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
     @Override
     public void hideLoading() {
         rvTrips.hideShimmerAdapter();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showError(String message) {
-        activity.getNavigator().showAlertDialog(getString(R.string.text_error),message,getString(R.string.text_got_it));
+        activity.getNavigator().showAlertDialog(getString(R.string.text_error), message, getString(R.string.text_got_it));
     }
 
-    private void setupToolbar(){
-        activity.setToolbarTitle("Mis viajes asignados");
+    private void setupToolbar() {
+        activity.setToolbarTitle(getString(R.string.text_trip_list_fragment_title));
     }
 
     private void setupRecyclerView() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(this);
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTrips.setHasFixedSize(true);
-        rvTrips.setDemoChildCount(3);
+        rvTrips.setDemoChildCount(1);
         rvTrips.setDemoLayoutReference(R.layout.item_trip_list_demo);
         adapter.setListener(this);
         rvTrips.setAdapter(adapter);
@@ -121,5 +128,11 @@ public class TripListFragment extends BaseFragment implements TripListView, Trip
     @Override
     public void onItemClick(Trip trip) {
         activity.getNavigator().navigateToTripDetailActivity(trip);
+    }
+
+    @Override
+    public void onRefresh() {
+        rvTrips.setDemoChildCount(adapter.getItemCount());
+        presenter.getPendingTrips();
     }
 }

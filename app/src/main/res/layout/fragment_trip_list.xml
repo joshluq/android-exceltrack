@@ -5,15 +5,25 @@
     android:layout_height="match_parent"
     tools:context="pe.exceltransport.exceltrack.view.fragment.TripListFragment">
 
-    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-        android:id="@+id/rv_trips"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_trip_list"
-        app:shimmer_demo_angle="20"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/rv_trips"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_demo_angle="20"
+            tools:listitem="@layout/item_trip_list" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
