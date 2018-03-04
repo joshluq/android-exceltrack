@@ -33,5 +33,7 @@
     <string name="rationale_ask_ok">Gracias</string>
     <string name="text_invalid_field">Campo no valido</string>
     <string name="text_trip_list_fragment_title">Mis viajes asignados</string>
+    <string name="text_send">Enviar</string>
+    <string name="text_incident_dialog_title">¿Qué Pasó?</string>
 
 </resources>

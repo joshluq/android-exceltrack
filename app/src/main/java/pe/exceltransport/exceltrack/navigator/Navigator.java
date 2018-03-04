@@ -13,7 +13,7 @@ import pe.exceltransport.exceltrack.view.activity.BaseActivity;
 import pe.exceltransport.exceltrack.view.activity.MainActivity;
 import pe.exceltransport.exceltrack.view.activity.SignInActivity;
 import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
-import pe.exceltransport.exceltrack.view.dialog.AddEventDialog;
+import pe.exceltransport.exceltrack.view.dialog.AddIncidentDialog;
 import pe.exceltransport.exceltrack.view.fragment.MoreFragment;
 import pe.exceltransport.exceltrack.view.fragment.SignInFragment;
 import pe.exceltransport.exceltrack.view.fragment.SplashFragment;
@@ -90,9 +90,9 @@ public class Navigator {
         builder.create().show();
     }
 
-    public void showAddEventDialog(long trackingId){
+    public void showAddIncidentDialog(long trackingId){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        AddEventDialog.newInstance(trackingId).show(fragmentManager, AddEventDialog.class.getSimpleName());
+        AddIncidentDialog.newInstance(trackingId).show(fragmentManager, AddIncidentDialog.class.getSimpleName());
     }
 
     private void fragmentTransaction(FragmentTransaction transaction) {

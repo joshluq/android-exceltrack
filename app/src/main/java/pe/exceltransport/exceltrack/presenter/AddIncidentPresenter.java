@@ -15,19 +15,19 @@ import pe.exceltransport.domain.interactor.DefaultObserver;
 import pe.exceltransport.exceltrack.exception.ErrorMessageFactory;
 import pe.exceltransport.exceltrack.internal.bus.EventBus;
 import pe.exceltransport.exceltrack.internal.bus.RxBus;
-import pe.exceltransport.exceltrack.view.AddEventView;
+import pe.exceltransport.exceltrack.view.AddIncidentView;
 import pe.exceltransport.exceltrack.view.util.LocationProvider;
 
-public class AddEventPresenter implements Presenter<AddEventView>, LocationProvider.LocationListener {
+public class AddIncidentPresenter implements Presenter<AddIncidentView>, LocationProvider.LocationListener {
 
-    private AddEventView view;
+    private AddIncidentView view;
     private final Context context;
     private final AddEvent addEvent;
     private final LocationProvider locationProvider;
     private final RxBus rxBus;
 
     @Inject
-    AddEventPresenter(Context context, AddEvent addEvent, LocationProvider locationProvider, RxBus rxBus) {
+    AddIncidentPresenter(Context context, AddEvent addEvent, LocationProvider locationProvider, RxBus rxBus) {
         this.context = context;
         this.addEvent = addEvent;
         this.locationProvider = locationProvider;
@@ -35,7 +35,7 @@ public class AddEventPresenter implements Presenter<AddEventView>, LocationProvi
     }
 
     @Override
-    public void setView(@NonNull AddEventView view) {
+    public void setView(@NonNull AddIncidentView view) {
         this.view = view;
     }
 
@@ -84,6 +84,18 @@ public class AddEventPresenter implements Presenter<AddEventView>, LocationProvi
     }
 
     private class AddEventObserver extends DefaultObserver<Tracking> {
+
+        @Override
+        protected void onStart() {
+            super.onStart();
+            view.showLoading();
+        }
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+            view.hideLoading();
+        }
 
         @Override
         public void onNext(Tracking tracking) {
