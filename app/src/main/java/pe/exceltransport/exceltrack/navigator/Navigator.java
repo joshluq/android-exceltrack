@@ -90,9 +90,9 @@ public class Navigator {
         builder.create().show();
     }
 
-    public void showAddEventDialog(){
+    public void showAddEventDialog(long trackingId){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        AddEventDialog.newInstance().show(fragmentManager, AddEventDialog.class.getSimpleName());
+        AddEventDialog.newInstance(trackingId).show(fragmentManager, AddEventDialog.class.getSimpleName());
     }
 
     private void fragmentTransaction(FragmentTransaction transaction) {

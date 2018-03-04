@@ -19,4 +19,11 @@ public class LocationEntityDataMapper {
         location.setLongitude(entity.getLongitude());
         return location;
     }
+
+    public static Location transform(android.location.Location location){
+        Location currentLocation = new Location();
+        currentLocation.setLatitude(location.getLatitude());
+        currentLocation.setLongitude(location.getLongitude());
+        return currentLocation;
+    }
 }

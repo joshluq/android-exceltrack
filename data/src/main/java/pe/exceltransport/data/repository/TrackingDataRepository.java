@@ -10,12 +10,12 @@ import pe.exceltransport.domain.Event;
 import pe.exceltransport.domain.Tracking;
 import pe.exceltransport.domain.repository.TrackingRepository;
 
-public class TrackingDataRepository implements TrackingRepository{
+public class TrackingDataRepository implements TrackingRepository {
 
     private final RestApi restApi;
 
-     @Inject
-     TrackingDataRepository(RestApi restApi) {
+    @Inject
+    TrackingDataRepository(RestApi restApi) {
         this.restApi = restApi;
     }
 

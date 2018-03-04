@@ -16,11 +16,18 @@ import pe.exceltransport.domain.Tracking;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.AddEventPresenter;
 import pe.exceltransport.exceltrack.view.AddEventView;
+import pe.exceltransport.exceltrack.view.util.Extra;
 
-public class AddEventDialog extends BaseDialog implements AddEventView{
+public class AddEventDialog extends BaseDialog implements AddEventView {
 
-    public static AddEventDialog newInstance() {
-        return new AddEventDialog();
+    private long trackingId;
+
+    public static AddEventDialog newInstance(long trackingId) {
+        AddEventDialog dialog = new AddEventDialog();
+        Bundle arg = new Bundle();
+        arg.putLong(Extra.TRACKING_ID.getValue(), trackingId);
+        dialog.setArguments(arg);
+        return dialog;
     }
 
     @Inject
@@ -38,18 +45,30 @@ public class AddEventDialog extends BaseDialog implements AddEventView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        injectView(this,view);
+        injectView(this, view);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         presenter.setView(this);
+        getExtras();
+    }
+
+    @Override
+    public long getTrackingId() {
+        return trackingId;
+    }
+
+    @Override
+    public String getIncidentDetail() {
+        return null;
     }
 
     @Override
     public void renderTracking(Tracking tracking) {
-
+        presenter.sendBus(tracking);
+        dismiss();
     }
 
     @Override
@@ -74,7 +93,12 @@ public class AddEventDialog extends BaseDialog implements AddEventView{
     }
 
     @OnClick(R.id.btn_add)
-    public void onBtnAdd(){
-        presenter.sendBus();
+    public void onBtnAdd() {
+        presenter.getCurrentLocation();
+    }
+
+    private void getExtras() {
+        if (getArguments() != null)
+            trackingId = getArguments().getLong(Extra.TRACKING_ID.getValue());
     }
 }

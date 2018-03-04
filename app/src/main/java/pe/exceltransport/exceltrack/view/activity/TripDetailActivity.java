@@ -134,7 +134,7 @@ public class TripDetailActivity extends BaseActivity implements TripDetailView, 
 
     @OnClick(R.id.fab_events)
     public void onFabEvents() {
-        navigator.showAddEventDialog();
+        navigator.showAddEventDialog(getTrackingId());
     }
 
     @Override

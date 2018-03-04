@@ -1,7 +1,6 @@
 package pe.exceltransport.exceltrack.presenter;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -14,7 +13,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 import pe.exceltransport.data.exception.DefaultException;
 import pe.exceltransport.domain.Event;
 import pe.exceltransport.domain.Tracking;
@@ -98,8 +96,8 @@ public class TripDetailPresenter implements Presenter<TripDetailView>, LocationP
 
     public void eventListener(){
         rxBus.toObservable().subscribe(object -> {
-            if (object instanceof EventBus.UpdateTrackinEvent) {
-
+            if (object instanceof EventBus.UpdateTrackingEvent) {
+                view.renderTracking(((EventBus.UpdateTrackingEvent) object).getTracking());
             }
         });
     }
@@ -132,7 +130,6 @@ public class TripDetailPresenter implements Presenter<TripDetailView>, LocationP
         return locationProvider.getCurrentLocation();
     }
 
-    @SuppressLint("MissingPermission")
     @Override
     public void onNewLocation(Location location) {
         //default implementation

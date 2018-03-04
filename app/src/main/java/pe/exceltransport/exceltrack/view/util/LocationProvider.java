@@ -80,7 +80,7 @@ public class LocationProvider {
             return;
         }
         // Report to the UI that the location was updated
-        if (listener != null) {
+        if (listener != null&& location.hasAccuracy()) {
             this.currentLocation = location;
             listener.onNewLocation(location);
         }
