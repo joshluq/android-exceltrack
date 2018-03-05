@@ -178,7 +178,6 @@ public class SignInFragment extends BaseFragment implements SignInView, Validato
         validator.setValidationListener(this);
         validator.registerAdapter(TextInputLayout.class, new TextInputLayoutAdapter());
         validator.setViewValidatedAction(this);
-
     }
 
 }

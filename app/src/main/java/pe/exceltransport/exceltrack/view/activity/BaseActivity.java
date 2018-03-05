@@ -88,12 +88,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         return navigator;
     }
 
-    public void hideKeyboard(){
+    public void hideKeyboard() {
         KeyboardUtil.hideKeyboard(this);
     }
 
     public boolean isActionEnable() {
-        if (SystemClock.elapsedRealtime() - lastClickTime < 500){
+        if (SystemClock.elapsedRealtime() - lastClickTime < 500) {
             return false;
         }
         lastClickTime = SystemClock.elapsedRealtime();

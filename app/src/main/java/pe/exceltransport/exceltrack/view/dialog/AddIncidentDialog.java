@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -19,21 +25,29 @@ import pe.exceltransport.domain.Tracking;
 import pe.exceltransport.exceltrack.R;
 import pe.exceltransport.exceltrack.presenter.AddIncidentPresenter;
 import pe.exceltransport.exceltrack.view.AddIncidentView;
+import pe.exceltransport.exceltrack.view.activity.TripDetailActivity;
 import pe.exceltransport.exceltrack.view.util.Extra;
+import pe.exceltransport.exceltrack.view.util.TextInputLayoutAdapter;
 
-public class AddIncidentDialog extends BaseDialog implements AddIncidentView {
+public class AddIncidentDialog extends BaseDialog implements AddIncidentView, Validator.ValidationListener, Validator.ViewValidatedAction  {
 
-    @BindView(R.id.v_loading)
-    View vLoading;
-
+    @NotEmpty(messageResId = R.string.text_invalid_field)
     @BindView(R.id.til_incident_detail)
     TextInputLayout tilIncidentDetail;
 
     @BindView(R.id.btn_add)
     Button btnAdd;
 
+    @BindView(R.id.v_loading)
+    View vLoading;
+
     @Inject
     AddIncidentPresenter presenter;
+
+    @Inject
+    Validator validator;
+
+    private TripDetailActivity activity;
 
     private long trackingId;
 
@@ -65,8 +79,11 @@ public class AddIncidentDialog extends BaseDialog implements AddIncidentView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        activity = (TripDetailActivity) getActivity();
         presenter.setView(this);
         getExtras();
+        setupValidator();
+        initUI();
     }
 
     @Override
@@ -110,7 +127,40 @@ public class AddIncidentDialog extends BaseDialog implements AddIncidentView {
 
     @OnClick(R.id.btn_add)
     public void onBtnAdd() {
+        activity.hideKeyboard();
+        validator.validate();
+    }
+
+    @Override
+    public void onValidationSucceeded() {
         presenter.getCurrentLocation();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        errors.get(0).getView().requestFocus();
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(activity);
+            if (view instanceof TextInputLayout) {
+                ((TextInputLayout) view).setError(message);
+                ((TextInputLayout) view).setErrorEnabled(true);
+            }
+        }
+    }
+
+    @Override
+    public void onAllRulesPassed(View view) {
+        if (view instanceof TextInputLayout) {
+            ((TextInputLayout) view).setError("");
+            ((TextInputLayout) view).setErrorEnabled(false);
+        }
+    }
+
+    private void setupValidator() {
+        validator.setValidationListener(this);
+        validator.registerAdapter(TextInputLayout.class, new TextInputLayoutAdapter());
+        validator.setViewValidatedAction(this);
     }
 
     private void getExtras() {

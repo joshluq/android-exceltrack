@@ -7,7 +7,7 @@ import pe.exceltransport.exceltrack.view.dialog.AddIncidentDialog;
 @Module
 public abstract class TripDetailFragmentProvider {
 
-    @ContributesAndroidInjector(modules = AddEventDialogModule.class)
+    @ContributesAndroidInjector(modules = AddIncidenceDialogModule.class)
     abstract AddIncidentDialog provideAddEventDialog();
 
 }
